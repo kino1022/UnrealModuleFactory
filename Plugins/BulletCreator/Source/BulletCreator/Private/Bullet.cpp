@@ -25,3 +25,10 @@ void ABullet::Tick(float DeltaTime)
 
 }
 
+void ABullet::Initialize(AActor* Owner) {
+	if (!Owner) return;
+	PreInitialize(Owner);
+	ABullet::Owner = Owner;
+	PostInitialize();
+}
+
