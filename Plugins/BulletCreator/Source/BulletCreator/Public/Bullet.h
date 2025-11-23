@@ -29,8 +29,8 @@ public:
 
 protected:
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Bullet")
-	AActor* Owner;
+	UPROPERTY(EditAnywhere, Category = "Bullet")
+	TObjectPtr<AActor> Owner;
 
 protected:
 	// Called when the game starts or when spawned
