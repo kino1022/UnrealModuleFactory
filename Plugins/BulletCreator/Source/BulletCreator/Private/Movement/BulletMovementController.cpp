@@ -32,3 +32,11 @@ void UBulletMovementController::TickComponent(float DeltaTime, ELevelTick TickTy
 	// ...
 }
 
+bool UBulletMovementController::SetSpeedLogic(UBulletSpeedLogic* NextLogic) {
+	return true;
+}
+
+bool UBulletMovementController::SetDirectionLogic(UBulletDirectionLogic* NewDirection) {
+	return true;
+}
+

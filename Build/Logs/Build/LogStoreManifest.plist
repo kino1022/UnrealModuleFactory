@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>logFormatVersion</key>
+	<integer>11</integer>
+	<key>logs</key>
+	<dict>
+		<key>273720E5-6956-4FBD-9E33-D8CF4AF7E241</key>
+		<dict>
+			<key>className</key>
+			<string>IDECommandLineBuildLog</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>273720E5-6956-4FBD-9E33-D8CF4AF7E241.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>E</string>
+				<key>totalNumberOfAnalyzerIssues</key>
+				<integer>0</integer>
+				<key>totalNumberOfErrors</key>
+				<integer>1</integer>
+				<key>totalNumberOfTestFailures</key>
+				<integer>0</integer>
+				<key>totalNumberOfWarnings</key>
+				<integer>0</integer>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>UnrealModuleFactoryEditor (Mac) project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>UnrealModuleFactoryEditor</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Building workspace UnrealModuleFactory (Mac) with scheme UnrealModuleFactoryEditor and configuration Debug</string>
+			<key>timeStartedRecording</key>
+			<real>785615133.24168205</real>
+			<key>timeStoppedRecording</key>
+			<real>785615146.638906</real>
+			<key>title</key>
+			<string>Building workspace UnrealModuleFactory (Mac) with scheme UnrealModuleFactoryEditor and configuration Debug</string>
+			<key>uniqueIdentifier</key>
+			<string>273720E5-6956-4FBD-9E33-D8CF4AF7E241</string>
+		</dict>
+		<key>4201D3A9-E45D-4791-8916-DC8EF7BEDBB8</key>
+		<dict>
+			<key>className</key>
+			<string>IDECommandLineBuildLog</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>4201D3A9-E45D-4791-8916-DC8EF7BEDBB8.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>E</string>
+				<key>totalNumberOfAnalyzerIssues</key>
+				<integer>0</integer>
+				<key>totalNumberOfErrors</key>
+				<integer>1</integer>
+				<key>totalNumberOfTestFailures</key>
+				<integer>0</integer>
+				<key>totalNumberOfWarnings</key>
+				<integer>0</integer>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>UnrealModuleFactoryEditor (Mac) project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>UnrealModuleFactoryEditor</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Building workspace UnrealModuleFactory (Mac) with scheme UnrealModuleFactoryEditor and configuration Debug</string>
+			<key>timeStartedRecording</key>
+			<real>785615311.07530999</real>
+			<key>timeStoppedRecording</key>
+			<real>785615323.105003</real>
+			<key>title</key>
+			<string>Building workspace UnrealModuleFactory (Mac) with scheme UnrealModuleFactoryEditor and configuration Debug</string>
+			<key>uniqueIdentifier</key>
+			<string>4201D3A9-E45D-4791-8916-DC8EF7BEDBB8</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

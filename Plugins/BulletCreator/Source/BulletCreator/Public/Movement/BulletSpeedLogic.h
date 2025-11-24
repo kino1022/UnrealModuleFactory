@@ -3,21 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Bullet.h"
 #include "UObject/Object.h"
 #include "BulletSpeedLogic.generated.h"
 
+class ABullet;
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class BULLETCREATOR_API UBulletSpeedLogic : public UObject
 {
 	GENERATED_BODY()
 	
 public:
 
-	UBulletSpeedLogic();
+	UBulletSpeedLogic() {Speed = 0.0f;}
 
 	UFUNCTION(BlueprintCallable, Category = "Movement")
 	float GetSpeed () {return Speed;}

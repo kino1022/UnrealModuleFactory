@@ -14,7 +14,8 @@ class BULLETCREATOR_API UBulletDirectionLogic : public UObject
 {
 	GENERATED_BODY()
 public:
-	UBulletDirectionLogic();
+	
+	UBulletDirectionLogic(){ Direction = FVector::ZeroVector; }
 
 	UFUNCTION(BlueprintCallable, Category = "Movement")
 	FVector GetDirection() {
@@ -46,7 +47,7 @@ public:
 protected:
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Movement")
-	ABullet* Bullet;
+	TObjectPtr<ABullet> Bullet;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Movement")
 	FVector Direction;

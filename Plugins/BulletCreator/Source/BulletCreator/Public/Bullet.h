@@ -4,11 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Movement/BulletMovementController.h"
 #include "Bullet.generated.h"
 
 UCLASS()
-class BULLETCREATOR_API ABullet : public AActor
-{
+class BULLETCREATOR_API ABullet : public AActor {
+	
 	GENERATED_BODY()
 	
 public:	
@@ -16,21 +17,24 @@ public:
 	ABullet();
 
 	UFUNCTION(BlueprintCallable, Category = "Bullet")
-	void Initialize(AActor* Owner);
+	void Initialize(AActor* InOwner);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Bullet")
-	void PreInitialize(AActor* Owner);
+	void PreInitialize(AActor* InOwner);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Bullet")
 	void PostInitialize();
 
 	UFUNCTION(BlueprintCallable, Category = "Bullet")
-	AActor* GetOwner () {return Owner;}
+	AActor* GetOwnerActor () {return OwnerActor;}
 
 protected:
 
 	UPROPERTY(EditAnywhere, Category = "Bullet")
-	TObjectPtr<AActor> Owner;
+	TObjectPtr<AActor> OwnerActor;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = "Bullet")
+	TObjectPtr<UBulletMovementController> MovementController;
 
 protected:
 	// Called when the game starts or when spawned

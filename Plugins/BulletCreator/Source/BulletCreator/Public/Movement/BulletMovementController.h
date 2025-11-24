@@ -9,7 +9,7 @@
 #include "BulletMovementController.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) , Blueprintable)
 class UBulletMovementController : public UActorComponent
 {
 	GENERATED_BODY()
@@ -19,18 +19,18 @@ public:
 	UBulletMovementController();
 
 	UFUNCTION(BlueprintCallable, Category = "Movement")
-	bool SetSpeedLogic(UBulletSpeedLogic* speedLogic);
+	bool SetSpeedLogic(UBulletSpeedLogic* NextLogic);
 
 	UFUNCTION(BlueprintCallable, Category = "Movement")
-	bool SetDirectionLogic(UBulletDirectionLogic* directionLogic);
+	bool SetDirectionLogic(UBulletDirectionLogic* NextLogic);
 
 protected:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement")
-	UBulletSpeedLogic* SpeedLogic;
+	TObjectPtr<UBulletSpeedLogic> SpeedLogic;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement")
-	UBulletDirectionLogic* DirectionLogic;
+	TObjectPtr<UBulletDirectionLogic> DirectionLogic;
 
 	//弾丸の移動量
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement")
@@ -45,6 +45,5 @@ public:
 	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
+	
 };
