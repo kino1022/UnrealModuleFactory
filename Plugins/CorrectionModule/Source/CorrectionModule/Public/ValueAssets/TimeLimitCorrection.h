@@ -26,6 +26,20 @@ public:
 		return Obj;
 	}
 	
+	virtual float GetCorrectionValue_Implementation() const override {
+		return CorrectionValue;
+	}
+	
+	virtual TScriptInterface<ICorrectionTypeInterface> GetCorrectionType_Implementation() const override {
+		return CorrectionType;
+	}
+	
+	virtual bool IsEnableCorrection_Implementation() const override {
+		return EnableCorrection;
+	}
+	
+	virtual void Initialize_Implementation() override {}
+	
 protected:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "TimeLimit Correction Value")

@@ -25,8 +25,8 @@ class CORRECTIONMODULE_API ICorrectionValueInterface
 public:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Correction Value")
-	void Initialize(const float Value, const TScriptInterface<ICorrectionTypeInterface> Type);
-	virtual void Initialize_Implementation (const float Value, const TScriptInterface<ICorrectionTypeInterface> Type) =0;
+	void Initialize();
+	virtual void Initialize_Implementation () =0;
 	
 	///補正値の値を取得する
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Correction Value")
