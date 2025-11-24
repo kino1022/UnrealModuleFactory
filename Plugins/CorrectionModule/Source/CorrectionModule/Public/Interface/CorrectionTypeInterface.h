@@ -26,10 +26,10 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Correction Type")
 	int32 GetPriority () const;
-	virtual int32 GetPriority_Implementation () const { return 0; }
+	virtual int32 GetPriority_Implementation () const =0;
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Correction Type")
-	float ApplyCorrection (const float BaseValue, const TArray<TScriptInterface<ICorrectionValueInterface>> Corrections);
-	virtual float ApplyCorrection_Implementation (const float BaseValue, const TArray<TScriptInterface<ICorrectionValueInterface>> Corrections) { return BaseValue; }
+	float ApplyCorrection (const float BaseValue, const TArray<TScriptInterface<ICorrectionValueInterface>>& Corrections);
+	virtual float ApplyCorrection_Implementation (const float BaseValue, const TArray<TScriptInterface<ICorrectionValueInterface>>& Corrections) =0;
 	
 };

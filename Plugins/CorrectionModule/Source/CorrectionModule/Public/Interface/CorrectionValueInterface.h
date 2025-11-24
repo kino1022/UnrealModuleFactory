@@ -24,19 +24,23 @@ class CORRECTIONMODULE_API ICorrectionValueInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Correction Value")
+	void Initialize(const float Value, const TScriptInterface<ICorrectionTypeInterface> Type);
+	virtual void Initialize_Implementation (const float Value, const TScriptInterface<ICorrectionTypeInterface> Type) =0;
+	
 	///補正値の値を取得する
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Correction Value")
 	float GetCorrectionValue() const;
-	virtual float GetCorrectionValue_Implementation() const { return 0.0f; }
+	virtual float GetCorrectionValue_Implementation() const =0;
 	
 	///補正タイプを取得する
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Correction Value")
 	TScriptInterface<ICorrectionTypeInterface> GetCorrectionType() const;
-	virtual TScriptInterface<ICorrectionTypeInterface> GetCorrectionType_Implementation() const { return nullptr; }
+	virtual TScriptInterface<ICorrectionTypeInterface> GetCorrectionType_Implementation() const =0;
 	
 	///補正値が有効かどうかを取得する
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Correction Value")
 	bool IsEnableCorrection () const;
-	virtual bool IsEnableCorrection_Implementation () const { return false; }
+	virtual bool IsEnableCorrection_Implementation () const =0;
 	
 };

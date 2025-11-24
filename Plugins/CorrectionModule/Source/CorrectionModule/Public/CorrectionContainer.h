@@ -3,17 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CorrectionMapEntry.h"
 #include "Interface/CorrectionTypeInterface.h"
 #include "UObject/Object.h"
 #include "CorrectionContainer.generated.h"
 
+UDELEGATE(BlueprintInternalUseOnly)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCorrectionValueChanged);
+
 /**
  * 
  */
-UCLASS()
-class CORRECTIONMODULE_API UCorrectionContainer : public UObject
-{
+UCLASS(Blueprintable)
+class CORRECTIONMODULE_API UCorrectionContainer  : public UObject, public FTickableGameObject {
+	
 	GENERATED_BODY()
 	
 public:
@@ -36,9 +38,25 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Correction Type")
 	void ClearCorrectionValues ();
 	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Correction Type")
+	FOnCorrectionValueChanged OnCorrectionValueChanged;
+	
+	virtual UWorld* GetTickableGameObjectWorld() const override;
+	
+	virtual TStatId GetStatId() const override;
+	
+	virtual void Tick(float DeltaTime) override;
+	
 protected:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Correction Type")
-	TArray<UCorrectionMapEntry*> CorrectionMap;
+	TArray<TScriptInterface<ICorrectionValueInterface>> CorrectionValues;
+	
+	///無効な補正値を全て取得する
+	TArray<TScriptInterface<ICorrectionValueInterface>> GetDisEnabledCorrectionValues() const;
+	
+	///任意のタイプの補正値を全て取得する
+	TArray<TScriptInterface<ICorrectionValueInterface>> GetAnyTypeCorrections(TScriptInterface<ICorrectionTypeInterface> CorrectionType);
+	
 	
 };
