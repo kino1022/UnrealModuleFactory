@@ -1,6 +1,7 @@
 #pragma once
 #include "CorrectionValueBase.h"
 #include "Interface/CorrectionValueInterface.h"
+#include "TimeLimitCorrection.generated.h"
 
 UCLASS(Blueprintable)
 class UTimeLimitCorrection : public UCorrectionValueBase, public ICorrectionValueInterface {

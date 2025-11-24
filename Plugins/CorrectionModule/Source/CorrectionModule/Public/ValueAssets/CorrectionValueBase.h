@@ -1,5 +1,6 @@
 #pragma once
 #include "Interface/CorrectionValueInterface.h"
+#include "CorrectionValueBase.generated.h"
 
 UCLASS(Blueprintable)
 class UCorrectionValueBase : public UObject {
