@@ -18,7 +18,7 @@ public class UnrealModuleFactory : ModuleRules
 			"StateTreeModule",
 			"GameplayStateTreeModule",
 			"UMG",
-			"Slate"
+			"Slate", "StatusModule"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

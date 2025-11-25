@@ -4,7 +4,7 @@
 #include "TimeLimitCorrection.generated.h"
 
 UCLASS(Blueprintable)
-class UTimeLimitCorrection : public UCorrectionValueBase, public ICorrectionValueInterface {
+class UTimeLimitCorrection : public UCorrectionValueBase {
 	
 	GENERATED_BODY()
 	
