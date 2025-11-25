@@ -5,7 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Movement/BulletMovementController.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "Bullet.generated.h"
+
+class USphereComponent;
 
 UCLASS()
 class BULLETCREATOR_API ABullet : public AActor {
@@ -30,11 +33,20 @@ public:
 
 protected:
 
-	UPROPERTY(EditAnywhere, Category = "Bullet")
+	UPROPERTY(VisibleAnywhere, Category = "Bullet")
 	TObjectPtr<AActor> OwnerActor;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = "Bullet")
+	UPROPERTY(VisibleAnyWhere, BlueprintReadWrite,Category = "Bullet")
 	TObjectPtr<UBulletMovementController> MovementController;
+	
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Bullet")
+	UStaticMeshComponent* BulletMesh;
+	
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Bullet")
+	UProjectileMovementComponent* MovementComponent;
+	
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Bullet")
+	USphereComponent* CollisionComponent;
 
 protected:
 	// Called when the game starts or when spawned

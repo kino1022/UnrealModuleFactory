@@ -6,10 +6,10 @@
 #include "BulletDirectionLogic.h"
 #include "BulletSpeedLogic.h"
 #include "Components/ActorComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "BulletMovementController.generated.h"
 
-
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) , Blueprintable)
+UCLASS( ClassGroup=(BulletMovement), meta=(BlueprintSpawnableComponent) , Blueprintable)
 class UBulletMovementController : public UActorComponent
 {
 	GENERATED_BODY()
@@ -26,20 +26,44 @@ public:
 
 protected:
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement Controller")
 	TObjectPtr<UBulletSpeedLogic> SpeedLogic;
 	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement Controller")
 	TObjectPtr<UBulletDirectionLogic> DirectionLogic;
 
 	//弾丸の移動量
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement Controller")
 	FVector Velocity;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement Controller")
+	UProjectileMovementComponent* MovementComponent;
 
+	
 protected:
 	
 	// Called when the game starts
 	virtual void BeginPlay() override;
+	
+	///速度を計算する
+	UFUNCTION(BlueprintCallable, Category = "Movement Controller")
+	virtual FVector CalculateVelocity (const float DeltaTime);
+	
+	virtual void PreInitialize(){}
+	
+	virtual void PostInitialize(){}
+	
+	virtual void OnPreSpeedLogicChange (UBulletSpeedLogic* NextLogic){}
+	
+	virtual void OnPostSpeedLogicChange (){}
+	
+	virtual void OnPreDirectionLogicChange (UBulletDirectionLogic* NextLogic){}
+	
+	virtual void OnPostDirectionLogicChange (){}
+	
+	virtual void OnPreTick (float DeltaTime) {}
+	
+	virtual void OnPostTick (float DeltaTime) {}
 
 public:
 	

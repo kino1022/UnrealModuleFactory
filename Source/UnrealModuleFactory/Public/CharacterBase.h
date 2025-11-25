@@ -6,12 +6,14 @@
 #include "CharacterInitData.h"
 #include "HealthStatusComponent.h"
 #include "GameFramework/Character.h"
+#include "Interface/HealthProviderInterface.h"
+#include "Interface/MaxHealthProviderInterface.h"
 #include "CharacterBase.generated.h"
 
 class UHealthStatusComponent;
 
 UCLASS()
-class UNREALMODULEFACTORY_API ACharacterBase : public ACharacter{
+class UNREALMODULEFACTORY_API ACharacterBase : public ACharacter, public IHealthProviderInterface, public IMaxHealthProviderInterface{
 	GENERATED_BODY()
 
 public:
@@ -26,6 +28,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category="CharacterBase")
 	TScriptInterface<IStatusInterface> GetMaxHealthStatus () const {
 		return TScriptInterface<IStatusInterface>(MaxHealth);
+	}
+	
+	virtual UHealthStatusComponent* GetHealthComponent_Implementation() const override {
+		return Health;
+	}
+	
+	virtual UMaxHealthComponent* GetMaxHealthComponent_Implementation() const override {
+		return MaxHealth;
 	}
 
 protected:
