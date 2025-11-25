@@ -44,13 +44,13 @@ protected:
 	virtual void BeginPlay() override;
 	
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CharacterBase")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,  Category="CharacterBase")
 	FCharacterInitData InitData;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CharacterBase")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category="CharacterBase")
 	UHealthStatusComponent* Health;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CharacterBase")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category="CharacterBase")
 	UMaxHealthComponent* MaxHealth;
 
 public:	

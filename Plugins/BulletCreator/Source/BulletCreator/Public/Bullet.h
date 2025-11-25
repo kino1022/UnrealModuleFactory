@@ -36,7 +36,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Bullet")
 	TObjectPtr<AActor> OwnerActor;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, meta = (AllowPrivateAccess = "true"), Category = "Bullet")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Bullet")
 	UBulletMovementController* MovementController;
 	
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Bullet")
