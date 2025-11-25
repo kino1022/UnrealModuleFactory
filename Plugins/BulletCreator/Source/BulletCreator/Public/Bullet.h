@@ -36,16 +36,16 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Bullet")
 	TObjectPtr<AActor> OwnerActor;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Bullet")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, meta = (AllowPrivateAccess = "true"), Category = "Bullet")
 	UBulletMovementController* MovementController;
 	
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Bullet")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Bullet")
 	UStaticMeshComponent* BulletMesh;
 	
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Bullet")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Bullet")
 	UProjectileMovementComponent* MovementComponent;
 	
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Bullet")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Bullet")
 	USphereComponent* CollisionComponent;
 
 protected:
