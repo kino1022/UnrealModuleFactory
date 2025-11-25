@@ -9,7 +9,7 @@ class ABullet;
 /**
  * 
  */
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, BlueprintType)
 class BULLETCREATOR_API UBulletDirectionLogic : public UObject
 {
 	GENERATED_BODY()

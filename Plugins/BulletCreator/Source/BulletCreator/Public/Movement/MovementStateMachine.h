@@ -3,7 +3,7 @@
 #include "Movement/BulletMovementController.h"
 #include "MovementStateMachine.generated.h"
 
-UCLASS( ClassGroup=(BulletMovement), meta=(BlueprintSpawnableComponent) , Blueprintable)
+UCLASS( ClassGroup=(BulletMovement), meta=(BlueprintSpawnableComponent) , Blueprintable, BlueprintType)
 class UMovementStateMachine : public UBulletMovementController {
 	
 	GENERATED_BODY()

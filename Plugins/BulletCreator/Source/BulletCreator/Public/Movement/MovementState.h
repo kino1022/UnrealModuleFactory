@@ -12,7 +12,7 @@
 /**
  * 
  */
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, BlueprintType)
 class BULLETCREATOR_API UMovementState : public UObject
 {
 

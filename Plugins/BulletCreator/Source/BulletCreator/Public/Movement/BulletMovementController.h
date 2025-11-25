@@ -9,7 +9,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "BulletMovementController.generated.h"
 
-UCLASS( ClassGroup=(BulletMovement), meta=(BlueprintSpawnableComponent) , Blueprintable)
+UCLASS( ClassGroup=(BulletMovement), meta=(BlueprintSpawnableComponent) , Blueprintable, BlueprintType)
 class UBulletMovementController : public UActorComponent
 {
 	GENERATED_BODY()

@@ -10,7 +10,7 @@
 
 class USphereComponent;
 
-UCLASS()
+UCLASS(Blueprintable)
 class BULLETCREATOR_API ABullet : public AActor {
 	
 	GENERATED_BODY()
@@ -36,23 +36,25 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Bullet")
 	TObjectPtr<AActor> OwnerActor;
 	
-	UPROPERTY(VisibleAnyWhere, BlueprintReadWrite,Category = "Bullet")
-	TObjectPtr<UBulletMovementController> MovementController;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Bullet")
+	UBulletMovementController* MovementController;
 	
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Bullet")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Bullet")
 	UStaticMeshComponent* BulletMesh;
 	
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Bullet")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Bullet")
 	UProjectileMovementComponent* MovementComponent;
 	
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Bullet")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Bullet")
 	USphereComponent* CollisionComponent;
 
 protected:
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

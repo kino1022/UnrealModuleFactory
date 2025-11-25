@@ -10,7 +10,7 @@
 /**
  * 
  */
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, BlueprintType)
 class BULLETCREATOR_API UTransitionTrigger : public UObject
 {
 	GENERATED_BODY()
