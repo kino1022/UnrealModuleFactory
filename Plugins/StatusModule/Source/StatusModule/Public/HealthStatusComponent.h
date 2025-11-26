@@ -11,7 +11,7 @@
 UDELEGATE(BlueprintInternalUseOnly)
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeadEvent, AActor*, DeadActor);
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) , Blueprintable, BlueprintType)
 class STATUSMODULE_API UHealthStatusComponent : public UStatusComponent
 {
 	GENERATED_BODY()
