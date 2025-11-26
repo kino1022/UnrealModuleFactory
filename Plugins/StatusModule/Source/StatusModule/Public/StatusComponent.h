@@ -44,10 +44,6 @@ protected:
 	///マイナスの値を許可するかどうか
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Status Value")
 	bool AllowMinusValue = false;
-	
-	///ステータスの持ち主になるアクター
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Status Value")
-	AActor* OwnerActor;
 
 public:	
 	

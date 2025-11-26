@@ -9,7 +9,7 @@ UHealthStatusComponent::UHealthStatusComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
+	
 	// ...
 }
 
@@ -18,9 +18,11 @@ UHealthStatusComponent::UHealthStatusComponent()
 void UHealthStatusComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
 	
+	//最大値変化の購読処理
+	if (UStatusComponent* castedMaxHealth = Cast<UStatusComponent>(MaxHealth.GetObject())) {
+		castedMaxHealth->OnStatusChangedEvent.AddDynamic(this, &UHealthStatusComponent::OnMaxHealthChanged);
+	}
 }
 
 
@@ -44,6 +46,13 @@ void UHealthStatusComponent::SetStatusValue_Implementation(const float Value) {
 	Super::SetStatusValue(NextValue);
 	//0以下なら死亡時イベントを発火する
 	if (CurrentValue < 0.0f) {
-		OnDeadEvent.Broadcast(OwnerActor);
+		OnDeadEvent.Broadcast(GetOwner());
+	}
+}
+
+void UHealthStatusComponent::OnMaxHealthChanged() {
+	float Value = IStatusInterface::Execute_GetStatusValue(MaxHealth.GetObject());
+	if (Value < CurrentValue) {
+		IStatusInterface::Execute_SetStatusValue(this, Value);
 	}
 }

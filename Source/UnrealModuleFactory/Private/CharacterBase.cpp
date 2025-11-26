@@ -3,23 +3,28 @@
 #include "Public/CharacterBase.h"
 
 // Sets default values
-ACharacterBase::ACharacterBase()
-{
+ACharacterBase::ACharacterBase() {
+	
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	Health = CreateDefaultSubobject<UHealthStatusComponent>("Health");
+	AddOwnedComponent(Health);
+	
 	MaxHealth = CreateDefaultSubobject<UMaxHealthComponent>("MaxHealth");
+	AddOwnedComponent(MaxHealth);
+	
 }
 
 // Called when the game starts or when spawned
 void ACharacterBase::BeginPlay() {
 	Super::BeginPlay();
 	
+	//最大体力ステータスの初期化処理
 	if (MaxHealth != nullptr) {
 		IStatusInterface::Execute_SetStatusValue(MaxHealth, InitData.MaxHealth);
 	}
-	
+	//体力ステータスの初期化処理
 	if (Health != nullptr) {
 		IStatusInterface::Execute_SetStatusValue(Health, InitData.InitialHealth);
 	}

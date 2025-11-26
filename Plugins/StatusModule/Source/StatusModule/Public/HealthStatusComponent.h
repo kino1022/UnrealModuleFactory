@@ -33,6 +33,8 @@ protected:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Status Value")
 	TScriptInterface<IStatusInterface> MaxHealth;
+	
+	virtual void OnMaxHealthChanged ();
 
 public:	
 	
