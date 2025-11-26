@@ -3,17 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BulletDirectionLogic.h"
-#include "BulletSpeedLogic.h"
-#include "TransitionTrigger.h"
 #include "UObject/Object.h"
 #include "MovementState.generated.h"
+
+class UTransitionTrigger;
+class UBulletSpeedLogic;
+class UBulletDirectionLogic;
 
 /**
  * 
  */
 UCLASS(Blueprintable, BlueprintType)
-class BULLETCREATOR_API UMovementState : public UObject
+class BULLETCREATOR_API UMovementState : public UPrimaryDataAsset
 {
 
 	GENERATED_BODY()
@@ -28,9 +29,5 @@ public:
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement State")
 	TMap<UTransitionTrigger*, UMovementState*> TransitionMap;
-	
-	//ステートの初期化を行う
-	UFUNCTION(BlueprintCallable, Category = "Movement State")
-	void InitializeState (ABullet* InOwner);
 	
 };
