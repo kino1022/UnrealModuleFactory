@@ -13,8 +13,8 @@ class UBulletDirectionLogic;
 /**
  * 
  */
-UCLASS(Blueprintable, BlueprintType)
-class BULLETCREATOR_API UMovementState : public UPrimaryDataAsset
+UCLASS(Abstract, Meta=(LoadBehavior="LazyOnDemand"), Blueprintable, BlueprintType)
+class BULLETCREATOR_API UMovementState : public UDataAsset
 {
 
 	GENERATED_BODY()

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BackendCodeEditorMiscSettings">
+    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c0bb4996-69d8-440a-bc39-c9ff8314dc5b" name="変更" comment="">
+      <change afterPath="$PROJECT_DIR$/Source/UnrealModuleFactory/Private/InteractContext.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/UnrealModuleFactory/Public/InteractContext.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEditor.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEditor.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_TEST_Bullet.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_TEST_Bullet.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Variant_Combat/Blueprints/BP_CombatCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Variant_Combat/Blueprints/BP_CombatCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugins/BulletCreator/Source/BulletCreator/Public/Movement/MovementState.h" beforeDir="false" afterPath="$PROJECT_DIR$/Plugins/BulletCreator/Source/BulletCreator/Public/Movement/MovementState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/UnrealModuleFactory/UnrealModuleFactory.Build.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Source/UnrealModuleFactory/UnrealModuleFactory.Build.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnrealModuleFactory.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/UnrealModuleFactory.uproject" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="366C3VOSpz1zfZANZESePIGSJJd" />
+  <component name="ProjectStatusUIService"><![CDATA[{
+  "uiKindId": "Widget"
+}]]></component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/fujitayuuta/Documents/UnrealModuleFactory&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="デフォルトタスク">
+      <changelist id="c0bb4996-69d8-440a-bc39-c9ff8314dc5b" name="変更" comment="" />
+      <created>1764317437624</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1764317437624</updated>
+      <workItem from="1764317439601" duration="34000" />
+      <workItem from="1764317571881" duration="26000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>
