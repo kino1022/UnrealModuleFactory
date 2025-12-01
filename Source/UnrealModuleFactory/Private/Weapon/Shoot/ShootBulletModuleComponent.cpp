@@ -16,7 +16,7 @@ void UShootBulletModuleComponent::BeginPlay() {
 	Super::BeginPlay();
 	
 	if (FireControlLogic) {
-		FireControlLogic->SetFireDelegate(TDelegate<void()>::CreateUObject(this, &UShootBulletModuleComponent::OnFire));
+		FireControlLogic->BindFireDelegate(FOnFireDelegate::FDelegate::CreateUObject(this, &UShootBulletModuleComponent::OnFire));
 	}
 }
 
@@ -67,8 +67,8 @@ TArray<FString> UShootBulletModuleComponent::GetSocketNameOptions() const {
     return Options;
 }
 
-void UShootBulletModuleComponent::OnFire() {
+void UShootBulletModuleComponent::OnFire(FName SocketName) {
 	if (ShootSpawnLogic) {
-		ShootSpawnLogic->OnBulletSpawn(BulletActor);
+		ShootSpawnLogic->OnBulletSpawn(BulletActor, SocketName);
 	}
 }

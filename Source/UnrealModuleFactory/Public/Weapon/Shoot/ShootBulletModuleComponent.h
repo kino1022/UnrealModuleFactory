@@ -11,6 +11,9 @@
 
 struct FInteractContext;
 
+// ShootSocketName を受け取るDelegateの宣言
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnFireDelegate, FName);
+
 /**
  * 
  */
@@ -38,15 +41,17 @@ public:
 	/*
 	 * 実際の射撃の動作を呼び出すメソッド
 	 */
-	virtual void OnFire();
+	virtual void OnFire(FName SocketName);
 	
 protected:
+	
+	FOnFireDelegate OnFireDelegate;
 	
 	/*
 	 *発射する弾丸のアクタークラス
 	 */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Shoot Bullet")
-	TSubclassOf<class ABullet> BulletActor;
+	TSubclassOf<ABullet> BulletActor;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Shoot Bullet", meta = (GetOptions = "GetSocketNameOptions"))
 	FName ShootSocketName = "Muzzle";

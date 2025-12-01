@@ -5,10 +5,14 @@
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
 #include "Weapon/WeaponBase.h"
-#include "Weapon/Shoot/ShootBulletModuleComponent.h"
-#include "FireControlLogic.generated.h"
 
 struct FInteractContext;
+
+#include "FireControlLogic.generated.h"
+
+// ShootSocketName を受け取るDelegateの宣言
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnFireDelegate, FName);
+
 
 /**
  * 
@@ -49,16 +53,16 @@ public:
 		}
 		return nullptr;
 	}
-	
-	UFUNCTION(BlueprintCallable, Category = "Fire Control Logic")
-	void SetFireDelegate (const TDelegate<void ()>& Delegate) {
-		OnFireDelegate = Delegate;
+
+	// Delegate接続用メソッド（BlueprintCallableから外す）
+	void BindFireDelegate(const FOnFireDelegate::FDelegate& InDelegate) {
+		OnFireDelegate.Add(InDelegate);
 	}
 
 	
 protected:
 	
-	TDelegate<void ()> OnFireDelegate;
+	FOnFireDelegate OnFireDelegate;
 	
 	// 持ち主の武器を取得するヘルパー
 	class AWeaponBase* GetWeapon() const

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "CharacterInitData.h"
 #include "HealthStatusComponent.h"
+#include "InputMappingContext.h"
 #include "GameFramework/Character.h"
 #include "Interface/HealthProviderInterface.h"
 #include "Interface/MaxHealthProviderInterface.h"
@@ -52,6 +53,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category="CharacterBase")
 	UMaxHealthComponent* MaxHealth;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="CharacterBase")
+	TSoftObjectPtr<UInputMappingContext> InputMapping;
 
 public:	
 	// Called every frame

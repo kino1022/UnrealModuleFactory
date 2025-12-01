@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Public/CharacterBase.h"
+#include "Public/Character/CharacterBase.h"
 
 // Sets default values
 ACharacterBase::ACharacterBase() {
@@ -18,16 +18,19 @@ ACharacterBase::ACharacterBase() {
 
 // Called when the game starts or when spawned
 void ACharacterBase::BeginPlay() {
+	
 	Super::BeginPlay();
 	
 	//最大体力ステータスの初期化処理
 	if (MaxHealth != nullptr) {
 		IStatusInterface::Execute_SetStatusValue(MaxHealth, InitData.MaxHealth);
 	}
+	
 	//体力ステータスの初期化処理
 	if (Health != nullptr) {
 		IStatusInterface::Execute_SetStatusValue(Health, InitData.InitialHealth);
 	}
+	
 }
 
 // Called every frame

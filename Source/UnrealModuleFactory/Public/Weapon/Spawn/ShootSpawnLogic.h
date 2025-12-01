@@ -18,7 +18,7 @@ class UNREALMODULEFACTORY_API UShootSpawnLogic : public UObject
 	
 public:
 	
-	virtual void OnBulletSpawn (TSubclassOf<ABullet> BulletActor) {}
+	virtual void OnBulletSpawn (TSubclassOf<ABullet> BulletActor, FName SocketName) {}
 	
 	virtual UWorld* GetWorld () const override {
 		// Outer（持ち主）がアクターやコンポーネントなら、そこからワールドをもらう
