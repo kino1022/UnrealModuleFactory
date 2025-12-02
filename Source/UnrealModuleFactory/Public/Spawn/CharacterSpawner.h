@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "CharacterSpawner.generated.h"
 
-UCLASS()
+UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class UNREALMODULEFACTORY_API ACharacterSpawner : public AActor
 {
 	GENERATED_BODY()
@@ -37,7 +37,7 @@ public:
 	virtual void OnBeforeSpawn_Implementation();
 	
 	UFUNCTION(BlueprintCallable, Category = "Character Spawner")
-	bool SetSpawnCharacter (TSubclassOf<ACharacterBase> NexeCharacter);
+	bool SetSpawnCharacter (TSubclassOf<ACharacterBase> NextCharacter);
 	
 protected:
 	

@@ -53,9 +53,6 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category="CharacterBase")
 	UMaxHealthComponent* MaxHealth;
-	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="CharacterBase")
-	TSoftObjectPtr<UInputMappingContext> InputMapping;
 
 public:	
 	// Called every frame

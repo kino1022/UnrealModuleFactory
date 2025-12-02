@@ -2,6 +2,7 @@
 
 
 #include "HealthStatusComponent.h"
+#include "GameFramework/Character.h"
 
 // Sets default values for this component's properties
 UHealthStatusComponent::UHealthStatusComponent()
@@ -18,6 +19,11 @@ UHealthStatusComponent::UHealthStatusComponent()
 void UHealthStatusComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	ACharacter* OwnerCharacter = Cast<ACharacter>(GetOwner());
+	if (OwnerCharacter) {
+		MaxHealth = OwnerCharacter->FindComponentByClass<UMaxHealthComponent>();
+	}
 	
 	//最大値変化の購読処理
 	if (UStatusComponent* castedMaxHealth = Cast<UStatusComponent>(MaxHealth.GetObject())) {
