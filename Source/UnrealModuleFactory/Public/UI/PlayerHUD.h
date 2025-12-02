@@ -11,7 +11,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable, BlueprintType)
 class UNREALMODULEFACTORY_API UPlayerHUD : public UUserWidget
 {
 	
@@ -21,6 +21,10 @@ public:
 	/*　widgetの初期化処理　*/
 	virtual void NativeConstruct() override;
 	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "PlayerHUD")
+	void ChangeCharacter (ACharacterBase* NextCharacter);
+	virtual void ChangeCharacter_Implementation(ACharacterBase* NextCharacter);
+	
 protected:
 	
 	/*　表示の対象になるプレイヤー　*/
@@ -28,6 +32,6 @@ protected:
 	ACharacterBase* PlayerActor;
 	
 	/* 体力バーのウィジェット */
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Player HUD")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Player HUD")
 	class UUserHealthBar* HealthBarWidget;
 };

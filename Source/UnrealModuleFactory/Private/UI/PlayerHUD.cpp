@@ -9,10 +9,13 @@ void UPlayerHUD::NativeConstruct() {
 	
 	Super::NativeConstruct();
 	
-	PlayerActor = Cast<ACharacterBase>(GetOwningPlayerPawn());
-	
-	if (HealthBarWidget && PlayerActor) {
-		HealthBarWidget->SetCharacterModel(PlayerActor);
+}
+
+void UPlayerHUD::ChangeCharacter_Implementation(ACharacterBase* NextCharacter) {
+	if (NextCharacter) {
+		PlayerActor = NextCharacter;
+		if (HealthBarWidget) {
+			HealthBarWidget->SetCharacterModel(NextCharacter);
+		}
 	}
-	
 }

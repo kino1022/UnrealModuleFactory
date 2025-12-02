@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "CharacterInitData.h"
 #include "HealthStatusComponent.h"
-#include "InputMappingContext.h"
 #include "GameFramework/Character.h"
 #include "Interface/HealthProviderInterface.h"
 #include "Interface/MaxHealthProviderInterface.h"
@@ -53,7 +52,20 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category="CharacterBase")
 	UMaxHealthComponent* MaxHealth;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadonly, Category="CharacterBase")
+	class USpringArmComponent* CameraBoom;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadonly, Category="CharacterBase")
+	class UCameraComponent* FollowCamera;
 
+	/* 画面上に配置するHUDのクラス */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CharacterBase")
+	TSubclassOf<class UUserWidget> HUDWidget;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="CharacterBase")
+	UUserWidget* PlayerHUD;
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
