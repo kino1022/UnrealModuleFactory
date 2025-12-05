@@ -20,7 +20,10 @@ public class UnrealModuleFactory : ModuleRules
 			"UMG",
 			"Slate", 
 			"StatusModule",
-			"BulletCreator"
+			"BulletCreator",
+			"GameplayTags",
+			"GameplayTasks",
+			"GameplayAbilities"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

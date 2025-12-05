@@ -32,4 +32,7 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Character Instance")
 	class UCharacterMovementComponent* MovementComponent;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Character Instance")
+	TArray<class UGameplayAbility*> ActiveAbilities;
 };

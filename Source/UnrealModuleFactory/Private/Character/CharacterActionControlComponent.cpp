@@ -20,14 +20,15 @@ UCharacterActionControlComponent::UCharacterActionControlComponent()
 
 
 // Called when the game starts
-void UCharacterActionControlComponent::BeginPlay()
-{
+void UCharacterActionControlComponent::BeginPlay() {
 	Super::BeginPlay();
 	
 	CharacterActor = Cast<ACharacterBase>(GetOwner());
+	
 	if (CharacterActor) {
-		
 		CameraComponent = CharacterActor->FindComponentByClass<UCameraComponent>();
+		MovementComponent = CharacterActor->GetCharacterMovement();
+		SetupInputComponent(CharacterActor->InputComponent);
 	}
 }
 
@@ -41,15 +42,10 @@ void UCharacterActionControlComponent::TickComponent(float DeltaTime, ELevelTick
 }
 
 void UCharacterActionControlComponent::Move_Implementation(const struct FInputActionValue& Value) {
+	
 	FVector2D MovementVector = Value.Get<FVector2D>();
 	
-	float PreviousMovementSpeed = MovementComponent->GetMaxSpeed();
-	
-	float MovementSpeed = IsSprintInput ? SprintSpeed : MovementVector.Size() * WalkSpeed;
-	
 	if (CharacterActor&& CameraComponent && MovementComponent) {
-		
-		MovementComponent->MaxWalkSpeed = FMath::FInterpTo(PreviousMovementSpeed, MovementSpeed, GetWorld()->GetDeltaSeconds(), AccelerationSmooth);
 		
 		const FRotator Rotation = CameraComponent->GetComponentRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
@@ -59,21 +55,21 @@ void UCharacterActionControlComponent::Move_Implementation(const struct FInputAc
 		
 		CharacterActor->AddMovementInput(ForwardDirection, MovementVector.Y);
 		CharacterActor->AddMovementInput(RightDirection, MovementVector.X);
-	}
-}
-
-void UCharacterActionControlComponent::Sprint_Implementation(const struct FInputActionValue& Value) {
-	if (Value.IsNonZero()) {
-		IsSprintInput = true;
-	}
-	else {
-		IsSprintInput = false;
-	}
+	} 
 }
 
 void UCharacterActionControlComponent::SetupInputComponent(class UInputComponent* PlayerInputComponent) {
+	
+	if (PlayerInputComponent == nullptr) {
+		return;
+	}
+	
 	if (UEnhancedInputComponent* EnhancedInput = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
-		EnhancedInput->BindAction(MoveInput, ETriggerEvent::Triggered, this, &UCharacterActionControlComponent::Move);
-		EnhancedInput->BindAction(SprintInput, ETriggerEvent::Triggered, this, &UCharacterActionControlComponent::Sprint);
+		EnhancedInput->BindAction(
+			MoveAction,
+			ETriggerEvent::Triggered,
+			this,
+			&UCharacterActionControlComponent::Move
+			);
 	}
 }

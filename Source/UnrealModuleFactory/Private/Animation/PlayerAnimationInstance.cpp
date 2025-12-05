@@ -24,4 +24,10 @@ void UPlayerAnimationInstance::NativeUpdateAnimation(float DeltaSeconds) {
 		IsInAir = MovementComponent->IsFalling();
 		IsInJump = MovementComponent->IsFlying();
 	}
+	
+	if (PlayerCharacter) {
+		if (UActionAbilitySystemComponent* ASC = Cast<UActionAbilitySystemComponent>(PlayerCharacter->GetAbilitySystemComponent())) {
+			ASC->GetActiveAbilities(ActiveAbilities);
+		}
+	}
 }

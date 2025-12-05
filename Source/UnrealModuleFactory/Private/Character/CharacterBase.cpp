@@ -2,10 +2,16 @@
 
 #include "Public/Character/CharacterBase.h"
 
+#include "Action/AbilityInputAction.h"
+#include "Action/ActionAbilitySystemComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Public/UI/PlayerHUD.h"
+#include "Public/Action/ActionAbilitySystemComponent.h"
+#include "EnhancedInput/Public/EnhancedInputComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+
 
 // Sets default values
 ACharacterBase::ACharacterBase() {
@@ -17,6 +23,10 @@ ACharacterBase::ACharacterBase() {
 	
 	MaxHealth = CreateDefaultSubobject<UMaxHealthComponent>("MaxHealth");
 	AddOwnedComponent(MaxHealth);
+	
+	
+	AbilitySystemComponent = CreateDefaultSubobject<UActionAbilitySystemComponent>("AbilitySystemComponent");
+	AddOwnedComponent(AbilitySystemComponent);
 	
 	
 	// キャラクターの回転とカメラの回転を分離する場合の設定
@@ -77,6 +87,38 @@ void ACharacterBase::Tick(float DeltaTime) {
 void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent){
 	
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	
+	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
+	
+	if (EnhancedInputComponent && AbilityInputConfig && AbilitySystemComponent) {
+		//　GASの入力登録処理
+		for (const FAbilityInputAction& Action : AbilityInputConfig->AbilityInputActions) {
+			if (Action.InputAction && Action.InputTag.IsValid()) {
+				EnhancedInputComponent->BindAction(
+					Action.InputAction,
+					ETriggerEvent::Started,
+					this,
+					&ACharacterBase::Input_AbilityInputTagPressed,
+					Action.InputTag
+					);
+				
+				EnhancedInputComponent->BindAction(
+					Action.InputAction,
+					ETriggerEvent::Completed,
+					this,
+					&ACharacterBase::Input_AbilityInputTagReleased,
+					Action.InputTag
+					);
+			}
+		}
+	}
+}
 
+void ACharacterBase::Input_AbilityInputTagPressed(FGameplayTag InputTag) {
+	AbilitySystemComponent->AbilityInputStarted(InputTag);
+}
+
+void ACharacterBase::Input_AbilityInputTagReleased(FGameplayTag InputTag) {
+	AbilitySystemComponent->AbilityInputCanceled(InputTag);
 }
 

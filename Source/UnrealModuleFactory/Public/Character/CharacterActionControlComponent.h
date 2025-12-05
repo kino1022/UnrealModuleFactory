@@ -18,48 +18,25 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Input")
 	void Move(const struct FInputActionValue& Value);
-	virtual void Move_Implementation(const struct FInputActionValue& Value);
-	
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Input")
-	void Sprint (const struct FInputActionValue& Value);
-	virtual void Sprint_Implementation (const struct FInputActionValue& Value);
+	virtual void Move_Implementation(const FInputActionValue& Value);
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	
+	virtual void SetupInputComponent(UInputComponent* PlayerInputComponent);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character")
+	class UInputAction* MoveAction;
 	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement")
-	float WalkSpeed;
-	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement")
-	float SprintSpeed;
-	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement")
-	float AccelerationSmooth = 10.0f;
-	
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Movement")
-	bool IsSprintInput = false;
-	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Input")
-	class UInputMappingContext* MappingContext;
-	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Input")
-	class UInputAction* MoveInput;
-	
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Input")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character")
 	class ACharacterBase* CharacterActor;
 	
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Movement")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character")
 	class UCameraComponent* CameraComponent;
 	
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Movement")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character")
 	class UCharacterMovementComponent* MovementComponent;
-	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Input")
-	UInputAction* SprintInput;
-	
-	virtual void SetupInputComponent(class UInputComponent* PlayerInputComponent);
 
 public:	
 	// Called every frame

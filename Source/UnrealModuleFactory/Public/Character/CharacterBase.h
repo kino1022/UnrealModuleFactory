@@ -3,9 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemComponent.h"
 #include "CharacterInitData.h"
 #include "HealthStatusComponent.h"
+#include "Action/AbilityInputConfig.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
+#include "Action/ActionAbilitySystemComponent.h"
 #include "Interface/HealthProviderInterface.h"
 #include "Interface/MaxHealthProviderInterface.h"
 #include "CharacterBase.generated.h"
@@ -13,7 +17,11 @@
 class UHealthStatusComponent;
 
 UCLASS()
-class UNREALMODULEFACTORY_API ACharacterBase : public ACharacter, public IHealthProviderInterface, public IMaxHealthProviderInterface{
+class UNREALMODULEFACTORY_API ACharacterBase : public ACharacter, 
+	public IHealthProviderInterface, 
+	public IMaxHealthProviderInterface,
+	public IAbilitySystemInterface
+{
 	GENERATED_BODY()
 
 public:
@@ -28,6 +36,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category="CharacterBase")
 	TScriptInterface<IStatusInterface> GetMaxHealthStatus () const {
 		return TScriptInterface<IStatusInterface>(MaxHealth);
+	}
+
+	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override {
+		return Cast<UAbilitySystemComponent>(AbilitySystemComponent);
 	}
 	
 	virtual UHealthStatusComponent* GetHealthComponent_Implementation() const override {
@@ -58,7 +70,16 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category="CharacterBase")
 	class UCameraComponent* FollowCamera;
-
+	
+	UPROPERTY(EditAnywhere, BlueprintReadonly, Category="CharacterBase")
+	UActionAbilitySystemComponent* AbilitySystemComponent;
+	
+	UPROPERTY(EditDefaultsOnly, Category="CharacterBase")
+	TObjectPtr<UAbilityInputConfig> AbilityInputConfig;
+	
+	UPROPERTY(EditDefaultsOnly, Category="CharacterBase|Input")
+	class UInputMappingContext* DefaultMapping;
+	
 	/* 画面上に配置するHUDのクラス */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CharacterBase")
 	TSubclassOf<class UUserWidget> HUDWidget;
@@ -72,4 +93,8 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
+	void Input_AbilityInputTagPressed(FGameplayTag InputTag);
+	
+	void Input_AbilityInputTagReleased(FGameplayTag InputTag);
 };
