@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Character/CharacterBase.h"
-#include "Components/ProgressBar.h"
 #include "PlayerHUD.generated.h"
 
 /**
@@ -34,4 +33,7 @@ protected:
 	/* 体力バーのウィジェット */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Player HUD")
 	class UUserHealthBar* HealthBarWidget;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Player HUD")
+	class UAttributeBarWidget* StaminaBarWidget;
 };

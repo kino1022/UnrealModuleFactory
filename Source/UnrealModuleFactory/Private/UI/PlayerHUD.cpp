@@ -2,7 +2,7 @@
 
 
 #include "UI/PlayerHUD.h"
-
+#include "UI/AttributeBarWidget.h"
 #include "UI/UserHealthBar.h"
 
 void UPlayerHUD::NativeConstruct() {
@@ -16,6 +16,9 @@ void UPlayerHUD::ChangeCharacter_Implementation(ACharacterBase* NextCharacter) {
 		PlayerActor = NextCharacter;
 		if (HealthBarWidget) {
 			HealthBarWidget->SetCharacterModel(NextCharacter);
+		}
+		if (StaminaBarWidget) {
+			StaminaBarWidget->SetCharacterModel(NextCharacter);
 		}
 	}
 }
