@@ -46,9 +46,6 @@ void UAttributeBarWidget::SetCharacterModel(class ACharacterBase* CharacterModel
 }
 
 void UAttributeBarWidget::UpdateBar_Implementation() {
-	if (CurrentAttribute == nullptr || MaxAttribute == nullptr) {
-		return;
-	}
 
 	if (!AbilitySystemComponent.IsValid()) {
 		return;
