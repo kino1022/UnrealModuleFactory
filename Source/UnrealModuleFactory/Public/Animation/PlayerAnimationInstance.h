@@ -9,10 +9,11 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable, BlueprintType)
 class UNREALMODULEFACTORY_API UPlayerAnimationInstance : public UAnimInstance
 {
 	GENERATED_BODY()
+	
 public:
 	
 	virtual void NativeInitializeAnimation() override;
@@ -28,10 +29,19 @@ protected:
 	bool IsInAir = false;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Animation Instance")
-	class ACharacterBase* PlayerCharacter;
+	bool IsWalking = false;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Animation Instance")
+	float WalkDirection = 0.0f;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Animation Instance")
+	float WalkSpeed = 0.0f;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Animation Instance")
+	TWeakObjectPtr<class ACharacterBase> PlayerCharacter;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Character Instance")
-	class UCharacterMovementComponent* MovementComponent;
+	TWeakObjectPtr<class UCharacterMovementComponent> MovementComponent;
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Character Instance")
 	TArray<class UGameplayAbility*> ActiveAbilities;

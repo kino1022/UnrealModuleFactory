@@ -15,8 +15,9 @@ class UActionAbility : public UGameplayAbility {
 	GENERATED_BODY()
 	
 public:
-	
+
 	/* オーナーのCharacterBaseを取得します。 */
 	UFUNCTION(BlueprintCallable, Category = "Action|Ability")
 	class ACharacterBase* GetOwnerCharacter () const;
+	
 };

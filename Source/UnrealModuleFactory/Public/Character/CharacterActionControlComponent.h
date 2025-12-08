@@ -30,6 +30,9 @@ protected:
 	class UInputAction* MoveAction;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character")
+	class UInputAction* JumoAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character")
 	class ACharacterBase* CharacterActor;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character")
@@ -39,8 +42,9 @@ protected:
 	class UCharacterMovementComponent* MovementComponent;
 
 public:	
+	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+	
 };

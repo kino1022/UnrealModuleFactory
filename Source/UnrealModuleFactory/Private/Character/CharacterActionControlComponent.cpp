@@ -45,6 +45,12 @@ void UCharacterActionControlComponent::Move_Implementation(const struct FInputAc
 	
 	FVector2D MovementVector = Value.Get<FVector2D>();
 	
+	if (MovementVector.IsZero() || MovementVector.Size() == 0.1f) {
+		CharacterActor->AddMovementInput(FVector::Zero(),0);
+		CharacterActor->AddMovementInput(FVector::Zero(),0);
+		return;
+	}
+	
 	if (CharacterActor&& CameraComponent && MovementComponent) {
 		
 		const FRotator Rotation = CameraComponent->GetComponentRotation();
@@ -70,6 +76,13 @@ void UCharacterActionControlComponent::SetupInputComponent(class UInputComponent
 			ETriggerEvent::Triggered,
 			this,
 			&UCharacterActionControlComponent::Move
+			);
+			
+		EnhancedInput->BindAction(
+			JumoAction,
+			ETriggerEvent::Started,
+			CharacterActor,
+			&ACharacter::Jump
 			);
 	}
 }

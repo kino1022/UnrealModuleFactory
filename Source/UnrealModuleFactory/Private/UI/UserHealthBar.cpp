@@ -4,12 +4,9 @@
 #include "UI/UserHealthBar.h"
 
 #include "Character/CharacterBase.h"
+#include "Character/HealthAttributeSet.h"
 #include "Components/TextBlock.h"
 #include "Components/ProgressBar.h"
-#include "Interface/HealthProviderInterface.h"
-#include "Interface/MaxHealthProviderInterface.h"
-#include "StatusModule/Public/HealthStatusComponent.h"
-#include "StatusModule/Public/MaxHealthComponent.h"
 
 void UUserHealthBar::NativeConstruct() {
 	Super::NativeConstruct();
@@ -17,39 +14,37 @@ void UUserHealthBar::NativeConstruct() {
 
 bool UUserHealthBar::SetCharacterModel(ACharacterBase* CharacterModel) {
 	
-	//体力の参照がある場合は購読処理を解除しておく
-	if (HealthComponent.Get()) {
-		//購読解除に失敗した場合はfalseを返す
-		if (!UnregisterHealthDelegate()) return false;
+	//既に購読がある場合は購読解除処理
+	if (OnChangeMaxHealthDelegateHandle.IsValid()) {
+		OnChangeHealthDelegateHandle.Reset();
 	}
 	
-	//同様に最大体力の参照がある場合は購読処理を解除しておく
-	if (MaxHealthComponent.Get()) {
-		//購読解除に失敗した場合はfalseを返す
-		if (!UnregisterMaxHealthDelegate()) return false;
+	//体力変化処理の購読でも同様にして解除処理を行う
+	if (OnChangeHealthDelegateHandle.IsValid()) {
+		OnChangeMaxHealthDelegateHandle.Reset();
 	}
 	
-	//体力コンポーネントの取得
-	auto HealthComp = IHealthProviderInterface::Execute_GetHealthComponent(CharacterModel);
-	//取得に失敗した場合はfalseを返す
-	if (!HealthComp) return false;
+	UAbilitySystemComponent* AbilitySystem = CharacterModel->GetAbilitySystemComponent();
 	
-	HealthComponent = HealthComp;
+	//体力Attributeの変化を購読する処理
+	if (AbilitySystem) {
+		
+		OnChangeHealthDelegateHandle = AbilitySystem
+			->GetGameplayAttributeValueChangeDelegate(UHealthAttributeSet::GetHealthAttribute())
+			.AddUObject(this, &UUserHealthBar::OnChangeHealth);
+		
+		OnChangeMaxHealthDelegateHandle = AbilitySystem
+			->GetGameplayAttributeValueChangeDelegate(UHealthAttributeSet::GetMaxHealthAttribute())
+			.AddUObject(this, &UUserHealthBar::OnChangeMaxHealth);
+		
+	}
+	else {
+		return false;
+	}
 	
-	//購読に失敗したならfalseを返す
-	if (!RegisterHealthDelegate()) return false;
+	HealthAttribute = AbilitySystem->GetSet<UHealthAttributeSet>();
 	
-	//最大体力コンポーネントの取得
-	auto MaxHealthComp = IMaxHealthProviderInterface::Execute_GetMaxHealthComponent(CharacterModel);
-	//取得に失敗した場合はfalseを返す
-	if (!MaxHealthComp) return false;
-	
-	MaxHealthComponent = MaxHealthComp;
-	
-	//購読に失敗したならfalseを返す
-	if (!RegisterMaxHealthDelegate()) return false;
-	
-	//更新処理を実行
+	//登録処理が終了したので更新
 	UpdateHealthBar();
 	
 	return true;
@@ -57,26 +52,36 @@ bool UUserHealthBar::SetCharacterModel(ACharacterBase* CharacterModel) {
 
 void UUserHealthBar::UpdateHealthBar_Implementation() {
 	
-	//体力と最大体力の参照がないなら処理を返す
-	if (!HealthComponent.Get() || !MaxHealthComponent.Get()) return;
-	
-	float CurrentHealth = IStatusInterface::Execute_GetStatusValue(HealthComponent.Get());
-	
-	float MaxHealth = IStatusInterface::Execute_GetStatusValue(MaxHealthComponent.Get());
-	
-	//体力の割合の計算
-	float HealthRatio = 0.0f;
-	
-	//0除算対策
-	if (CurrentHealth == 0.0f || MaxHealth == 0.0f) {
-		HealthRatio = 0.0f;
-	} else {
-		HealthRatio = CurrentHealth / MaxHealth;
+	//体力Attributeが設定されていない場合は処理を抜ける
+	if (HealthAttribute == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Health attribute is null"));
+		return;
 	}
+	
+	//体力Attributeが有効でない場合は処理を抜ける
+	if (!HealthAttribute.IsValid()) {
+		UE_LOG(LogTemp, Warning, TEXT("Health attribute is not valid"));
+		return;
+	}
+	
+	const UHealthAttributeSet* Attribute = HealthAttribute.Get();
+	
+	//現在の体力を取得
+	float CurrentValue = Attribute->GetHealth();
+	//最大体力を取得
+	float MaxValue = Attribute->GetMaxHealth();
+	
+	//最大値を超過していた場合は最大値で上書きして補正
+	if (CurrentValue > MaxValue) {
+		CurrentValue = MaxValue;
+	}
+	
+	//体力の割合を取得
+	float HealthRatio = MaxValue < 0.0f || CurrentValue < 0.0f ? 0.0f : CurrentValue / MaxValue;
 	
 	//表示テキストを更新する
 	if (TextView) {
-		FString TextStr = FString::Printf(TEXT(" %d / %d"), FMath::CeilToInt(CurrentHealth), FMath::CeilToInt(MaxHealth));
+		FString TextStr = FString::Printf(TEXT(" %d / %d"), FMath::CeilToInt(CurrentValue), FMath::CeilToInt(MaxValue));
 		TextView->SetText(FText::FromString(TextStr));
 	}
 	
@@ -86,38 +91,13 @@ void UUserHealthBar::UpdateHealthBar_Implementation() {
 		FLinearColor BarColor = FLinearColor::LerpUsingHSV(FLinearColor(MinColor), FLinearColor(MaxColor), HealthRatio);
 		HealthBar->SetFillColorAndOpacity(BarColor);
 	}
+	
 }
 
-bool UUserHealthBar::RegisterHealthDelegate() {
-	
-	if (!HealthComponent.Get()) return false;
-	
-	HealthComponent->OnStatusChangedEvent.AddDynamic(this, &UUserHealthBar::UpdateHealthBar);
-	
-	return true;
+void UUserHealthBar::OnChangeHealth(const FOnAttributeChangeData& Data) {
+	UpdateHealthBar();
 }
 
-bool UUserHealthBar::RegisterMaxHealthDelegate() {
-	
-	if (!MaxHealthComponent.Get()) return false;
-	
-	MaxHealthComponent->OnStatusChangedEvent.AddDynamic(this, &UUserHealthBar::UpdateHealthBar);
-	
-	return true;
-}
-
-bool UUserHealthBar::UnregisterHealthDelegate() {
-	if (!HealthComponent.Get()) return false;
-	
-	HealthComponent->OnStatusChangedEvent.RemoveDynamic(this, &UUserHealthBar::UpdateHealthBar);
-	
-	return true;
-}
-
-bool UUserHealthBar::UnregisterMaxHealthDelegate() {
-	if (!MaxHealthComponent.Get()) return false;
-	
-	MaxHealthComponent->OnStatusChangedEvent.RemoveDynamic(this, &UUserHealthBar::UpdateHealthBar);
-	
-	return true;
+void UUserHealthBar::OnChangeMaxHealth(const FOnAttributeChangeData& Data) {
+	UpdateHealthBar();
 }

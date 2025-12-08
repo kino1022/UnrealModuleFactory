@@ -17,7 +17,7 @@ void UActionAbilitySystemComponent::AbilityInputCanceled (const FGameplayTag& In
 
 void UActionAbilitySystemComponent::ProcessAbilityInput(const FGameplayTag& InputTag, bool Pressed) {
 	for (FGameplayAbilitySpec& Spec : GetActivatableAbilities()) {
-		if (Spec.Ability && Spec.DynamicAbilityTags.HasTagExact(InputTag)) {
+		if (Spec.Ability && Spec.GetDynamicSpecSourceTags().HasTagExact(InputTag)) {
 			if (Pressed) {
 				// 入力押しイベントをスペックに通知
 				Spec.InputPressed = true;

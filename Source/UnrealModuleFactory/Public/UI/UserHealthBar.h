@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Character/HealthAttributeSet.h"
+#include "GameplayEffectTypes.h"
 #include "UserHealthBar.generated.h"
 
 /**
@@ -26,15 +28,11 @@ public:
 	void UpdateHealthBar();
 	virtual void UpdateHealthBar_Implementation();
 	
+	void OnChangeHealth(const FOnAttributeChangeData& Data);
+
+	void OnChangeMaxHealth(const FOnAttributeChangeData& Data);
+
 public:
-	
-	/* 参照している体力コンポーネント */
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Player HUD")
-	TWeakObjectPtr<class UHealthStatusComponent> HealthComponent;
-	
-	/* 参照している最大体力コンポーネント */
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Player HUD")
-	TWeakObjectPtr<class UMaxHealthComponent> MaxHealthComponent;
 	
 	/* 体力表示のプログレスバー */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Player HUD", meta = (BindWidget))
@@ -44,6 +42,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Player HUD", meta = (BindWidget))
 	class UTextBlock* TextView;
 	
+	/* 値を保持しているAttribute */
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Player HUD")
+	TWeakObjectPtr<const UHealthAttributeSet> HealthAttribute;
+	
 	/* 体力満タン時のバーの色 */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Player HUD")
 	FColor MaxColor;
@@ -52,15 +54,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Player HUD")
 	FColor MinColor;
 	
-	/* 体力変化の購読処理を行うメソッド */
-	bool RegisterHealthDelegate();
+	FDelegateHandle OnChangeMaxHealthDelegateHandle;
 	
-	/* 最大体力変化の購読処理を行うメソッド */
-	bool RegisterMaxHealthDelegate();
+	FDelegateHandle OnChangeHealthDelegateHandle;
 	
-	/* 体力変化の購読の解除を行うメソッド */
-	bool UnregisterHealthDelegate();
-	
-	/* 最大体力変化の購読の解除を行うメソッド */
-	bool UnregisterMaxHealthDelegate();
 };

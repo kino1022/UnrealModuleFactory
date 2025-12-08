@@ -26,7 +26,10 @@ public class UnrealModuleFactory : ModuleRules
 			"GameplayAbilities"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] { });
+		PrivateDependencyModuleNames.AddRange(new string[] 
+		{
+			"AnimGraphRuntime"
+		});
 
 		PublicIncludePaths.AddRange(new string[] {
 			"UnrealModuleFactory",
@@ -42,7 +45,8 @@ public class UnrealModuleFactory : ModuleRules
 			"UnrealModuleFactory/Variant_SideScrolling/AI",
 			"UnrealModuleFactory/Variant_SideScrolling/Gameplay",
 			"UnrealModuleFactory/Variant_SideScrolling/Interfaces",
-			"UnrealModuleFactory/Variant_SideScrolling/UI"
+			"UnrealModuleFactory/Variant_SideScrolling/UI",
+			"AnimGraphRuntime"
 		});
 
 		// Uncomment if you are using Slate UI

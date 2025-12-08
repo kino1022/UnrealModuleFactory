@@ -4,81 +4,68 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
-#include "CharacterInitData.h"
-#include "HealthStatusComponent.h"
+#include "Action/ActionAbilitySystemComponent.h"
 #include "Action/AbilityInputConfig.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
-#include "Action/ActionAbilitySystemComponent.h"
-#include "Interface/HealthProviderInterface.h"
-#include "Interface/MaxHealthProviderInterface.h"
 #include "CharacterBase.generated.h"
 
-class UHealthStatusComponent;
-
 UCLASS()
-class UNREALMODULEFACTORY_API ACharacterBase : public ACharacter, 
-	public IHealthProviderInterface, 
-	public IMaxHealthProviderInterface,
-	public IAbilitySystemInterface
-{
+class UNREALMODULEFACTORY_API ACharacterBase : public ACharacter, public IAbilitySystemInterface {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
 	ACharacterBase();
 	
-	UFUNCTION(BlueprintCallable, Category="CharacterBase")
-	TScriptInterface<IStatusInterface> GetHealthStatus () const {
-		return TScriptInterface<IStatusInterface>(Health);
-	}
-	
-	UFUNCTION(BlueprintCallable, Category="CharacterBase")
-	TScriptInterface<IStatusInterface> GetMaxHealthStatus () const {
-		return TScriptInterface<IStatusInterface>(MaxHealth);
-	}
-
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override {
 		return Cast<UAbilitySystemComponent>(AbilitySystemComponent);
 	}
 	
-	virtual UHealthStatusComponent* GetHealthComponent_Implementation() const override {
-		return Health;
-	}
+	UFUNCTION(BlueprintNativeEvent, Category = "Character")
+	void OnPreBegin ();
+	virtual void OnPreBegin_Implementation() {}
 	
-	virtual UMaxHealthComponent* GetMaxHealthComponent_Implementation() const override {
-		return MaxHealth;
-	}
+	UFUNCTION(BlueprintNativeEvent, Category = "Character")
+	void OnPostBegin();
+	virtual void OnPostBegin_Implementation() {}
 
 protected:
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
+	/* 体力のアトリビュート */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CharacterBase")
+	class UHealthAttributeSet* HealthAttribute;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,  Category="CharacterBase")
-	FCharacterInitData InitData;
+	/* 移動速度のアトリビュート */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CharacterBase")
+	class UMoveActionAttributeSet* MoveAttribute;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category="CharacterBase")
-	UHealthStatusComponent* Health;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category="CharacterBase")
-	UMaxHealthComponent* MaxHealth;
-	
+	/* 自撮り棒 */
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category="CharacterBase")
 	class USpringArmComponent* CameraBoom;
 	
+	/* 追従メインカメラ */
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category="CharacterBase")
 	class UCameraComponent* FollowCamera;
 	
+	/* アビリティ管理を行うカスタムコンポーネント */
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category="CharacterBase")
-	UActionAbilitySystemComponent* AbilitySystemComponent;
+	class UActionAbilitySystemComponent* AbilitySystemComponent;
 	
+	/* アビリティと入力の紐付けデータ */
 	UPROPERTY(EditDefaultsOnly, Category="CharacterBase")
 	TObjectPtr<UAbilityInputConfig> AbilityInputConfig;
 	
+	/* 通常アクションの入力マップ */
 	UPROPERTY(EditDefaultsOnly, Category="CharacterBase|Input")
 	class UInputMappingContext* DefaultMapping;
+	
+	/* 通常アクションの制御コンポーネント */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="CharacterBase")
+	class UCharacterActionControlComponent* ActionControl;
 	
 	/* 画面上に配置するHUDのクラス */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CharacterBase")
@@ -97,4 +84,14 @@ public:
 	void Input_AbilityInputTagPressed(FGameplayTag InputTag);
 	
 	void Input_AbilityInputTagReleased(FGameplayTag InputTag);
+	
+protected:
+	
+	virtual void PossessedBy(AController* NewController) override;
+	
+	virtual void OnRep_PlayerState() override;
+	
+	/* 各種AttributeSetの初期化処理を行うメソッド */
+	virtual void InitializeAttribute ();
+	
 };

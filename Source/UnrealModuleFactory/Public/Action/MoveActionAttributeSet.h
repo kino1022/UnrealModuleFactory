@@ -7,10 +7,10 @@
 #include "MoveActionAttributeSet.generated.h"
 
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
-	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
-	GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
-	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
-	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
+		GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
+		GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
+		GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
+		GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
 /**
  * 
@@ -24,6 +24,8 @@ public :
 	
 	UMoveActionAttributeSet();
 	
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 	
 	// 移動速度のAttributeを定義
@@ -31,9 +33,16 @@ public :
 	FGameplayAttributeData MoveSpeed;
 	ATTRIBUTE_ACCESSORS(UMoveActionAttributeSet, MoveSpeed)
 	
+	UPROPERTY(BlueprintReadOnly, Category="Attributes", ReplicatedUsing=OnRep_JumpForce)
+	FGameplayAttributeData JumpForce;
+	ATTRIBUTE_ACCESSORS(UMoveActionAttributeSet, JumpForce)
+	
 	// ネットワーク同期用
 	UFUNCTION()
 	virtual void OnRep_MoveSpeed(const FGameplayAttributeData& OldMoveSpeed);
+	
+	UFUNCTION()
+	virtual void OnRep_JumpForce(const FGameplayAttributeData& OldJumpForce);
 	
 protected:
 
