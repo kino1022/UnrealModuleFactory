@@ -52,7 +52,7 @@ protected:
 	class UCameraComponent* FollowCamera;
 	
 	/* アビリティ管理を行うカスタムコンポーネント */
-	UPROPERTY(EditAnywhere, BlueprintReadonly, Category="CharacterBase")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="CharacterBase")
 	class UActionAbilitySystemComponent* AbilitySystemComponent;
 	
 	/* アビリティと入力の紐付けデータ */
@@ -64,7 +64,7 @@ protected:
 	class UInputMappingContext* DefaultMapping;
 	
 	/* 通常アクションの制御コンポーネント */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="CharacterBase")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="CharacterBase")
 	class UCharacterActionControlComponent* ActionControl;
 	
 	/* 画面上に配置するHUDのクラス */

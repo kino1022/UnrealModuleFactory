@@ -25,7 +25,7 @@ void USprintActionAbility::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	
 	AbilitySystem = GetOwnerCharacter()->GetAbilitySystemComponent();
-	
+		
 	if (!AbilitySystem.IsValid()) {
 		return;
 	}
@@ -33,6 +33,12 @@ void USprintActionAbility::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 	UAbilitySystemComponent* AbilitySystemComponent = AbilitySystem.Get();
 	
 	if (AbilitySystemComponent) {
+		
+		if (ActiveGameplayEffect.IsValid()) {
+			AbilitySystemComponent->RemoveActiveGameplayEffect(ActiveGameplayEffect);
+			ActiveGameplayEffect.Invalidate();
+		}
+		
 		// スプリント用のGameplayEffectSpecを作成
 		FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent
 			->MakeOutgoingSpec(
@@ -61,6 +67,7 @@ void USprintActionAbility::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 void USprintActionAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) {
 	
 	if (!ActiveGameplayEffect.IsValid() && AbilitySystem.IsValid()) {
+		Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 		return;
 	}
 	

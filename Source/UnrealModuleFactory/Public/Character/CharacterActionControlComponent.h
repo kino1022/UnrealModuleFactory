@@ -26,19 +26,19 @@ protected:
 	
 	virtual void SetupInputComponent(UInputComponent* PlayerInputComponent);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character|ActionControl")
 	class UInputAction* MoveAction;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character|ActionControl")
 	class UInputAction* JumoAction;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character|ActionControl")
 	class ACharacterBase* CharacterActor;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character|ActionControl")
 	class UCameraComponent* CameraComponent;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character|ActionControl")
 	class UCharacterMovementComponent* MovementComponent;
 
 public:	

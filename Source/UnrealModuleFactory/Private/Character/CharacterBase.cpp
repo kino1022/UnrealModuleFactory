@@ -23,12 +23,13 @@ ACharacterBase::ACharacterBase() {
 	HealthAttribute = CreateDefaultSubobject<UHealthAttributeSet>("HealthAttribute");
 	
 	MoveAttribute = CreateDefaultSubobject<UMoveActionAttributeSet>("MoveAttribute");
+		
+	ActionControl = CreateDefaultSubobject<UCharacterActionControlComponent>("ActionController");
+	AddOwnedComponent(ActionControl);
 	
 	AbilitySystemComponent = CreateDefaultSubobject<UActionAbilitySystemComponent>("AbilitySystemComponent");
 	AddOwnedComponent(AbilitySystemComponent);
-	
-	ActionControl = CreateDefaultSubobject<UCharacterActionControlComponent>("ActionController");
-	AddOwnedComponent(ActionControl);
+
 	
 	// キャラクターの回転とカメラの回転を分離する場合の設定
 	// （キャラクターが向いている方向に勝手に回転しないようにする）
