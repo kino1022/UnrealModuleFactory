@@ -11,6 +11,7 @@
 #include "Public/UI/PlayerHUD.h"
 #include "Character/HealthAttributeSet.h"
 #include "Action/MoveActionAttributeSet.h"
+#include "Character/StaminaAttributeSet.h"
 #include "EnhancedInput/Public/EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -21,6 +22,8 @@ ACharacterBase::ACharacterBase() {
 	PrimaryActorTick.bCanEverTick = true;
 
 	HealthAttribute = CreateDefaultSubobject<UHealthAttributeSet>("HealthAttribute");
+
+	StaminaAttribute = CreateDefaultSubobject<UStaminaAttributeSet>("StaminaAttribute");
 	
 	MoveAttribute = CreateDefaultSubobject<UMoveActionAttributeSet>("MoveAttribute");
 		
@@ -67,6 +70,8 @@ void ACharacterBase::BeginPlay() {
 	Super::BeginPlay();
 	
 	OnPreBegin();
+
+	AbilitySystemComponent->InitAbilityActorInfo(this,this);
 	
 	if (HUDWidget) {
 		//HUDウィジェットの生成処理

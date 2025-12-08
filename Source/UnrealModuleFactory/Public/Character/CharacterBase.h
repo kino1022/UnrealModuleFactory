@@ -38,6 +38,9 @@ protected:
 	/* 体力のアトリビュート */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CharacterBase")
 	class UHealthAttributeSet* HealthAttribute;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CharacterBase")
+	class UStaminaAttributeSet* StaminaAttribute;
 	
 	/* 移動速度のアトリビュート */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CharacterBase")
