@@ -73,6 +73,10 @@ void ACharacterBase::BeginPlay() {
 
 	AbilitySystemComponent->InitAbilityActorInfo(this,this);
 	
+	if (UActionAbilitySystemComponent* ActionAbilitySystemComponent = Cast<UActionAbilitySystemComponent>(AbilitySystemComponent)) {
+		ActionAbilitySystemComponent->InitializeAbilities();
+	}
+	
 	if (HUDWidget) {
 		//HUDウィジェットの生成処理
 		PlayerHUD = CreateWidget<UUserWidget>(GetWorld(), HUDWidget);
@@ -104,6 +108,7 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		//　GASの入力登録処理
 		for (const FAbilityInputAction& Action : AbilityInputConfig->AbilityInputActions) {
 			if (Action.InputAction && Action.InputTag.IsValid()) {
+				UE_LOG(LogTemp, Warning, TEXT("ACharacterBase::SetupPlayerInputComponent : Binding Input Action %s to Tag %s"), *Action.InputAction->GetName(), *Action.InputTag.ToString());
 				//入力開始時の登録処理
 				EnhancedInputComponent->BindAction(
 					Action.InputAction,
@@ -138,18 +143,35 @@ void ACharacterBase::Input_AbilityInputTagReleased(FGameplayTag InputTag) {
 }
 	
 
-void ACharacterBase::PossessedBy(AController* NewController) {
+void ACharacterBase::PossessedBy(AController* NewController)
+{
 	Super::PossessedBy(NewController);
-	if (NewController && AbilitySystemComponent) {
+	
+	if (NewController && AbilitySystemComponent)
+	{
+		// サーバー側での初期化
 		AbilitySystemComponent->InitAbilityActorInfo(this, this);
 		InitializeAttribute();
+		
+		// アビリティの付与（サーバーのみ）
+		if (UActionAbilitySystemComponent* ActionASC = Cast<UActionAbilitySystemComponent>(AbilitySystemComponent))
+		{
+			ActionASC->InitializeAbilities();
+		}
 	}
 }
 
-void ACharacterBase::OnRep_PlayerState() {
+void ACharacterBase::OnRep_PlayerState()
+{
 	Super::OnRep_PlayerState();
-	if (AbilitySystemComponent && GetPlayerState()) {
+	
+	if (AbilitySystemComponent && GetPlayerState())
+	{
+		// クライアント側での初期化
 		AbilitySystemComponent->InitAbilityActorInfo(this, this);
+		
+		// クライアントではアビリティはレプリケーションで自動的に同期される
+		// InitializeAbilities()を呼ぶ必要はない
 	}
 }
 

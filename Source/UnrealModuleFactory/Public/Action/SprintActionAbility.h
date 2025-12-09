@@ -32,11 +32,33 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SprintActionAbility")
 	TSubclassOf<UGameplayEffect> SprintEffect;
 	
+	// スタミナ消費用のGameplayEffect
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SprintActionAbility")
+	TSubclassOf<UGameplayEffect> StaminaDrainEffect;
+	
+	// スタミナ消費量（秒単位）
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SprintActionAbility")
+	float StaminaDrainRate = 10.0f;
+	
+	// スタミナチェックの頻度（秒単位）
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SprintActionAbility")
+	float StaminaCheckInterval = 0.1f;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SprintActionAbility")
 	TWeakObjectPtr<UAbilitySystemComponent> AbilitySystem;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SprintActionAbility")
 	FGameplayTag SprintTag;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SprintActionAbility")
+	FGameplayTag DrainEffectTag;
+	
 	FActiveGameplayEffectHandle ActiveGameplayEffect;
+	FActiveGameplayEffectHandle ActiveStaminaDrainEffect;
+	
+	FTimerHandle StaminaCheckTimerHandle;
+	
+	// スタミナをチェックする関数
+	UFUNCTION()
+	void CheckStamina();
 };

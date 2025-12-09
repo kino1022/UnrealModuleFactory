@@ -19,5 +19,7 @@ public:
 	/* オーナーのCharacterBaseを取得します。 */
 	UFUNCTION(BlueprintCallable, Category = "Action|Ability")
 	class ACharacterBase* GetOwnerCharacter () const;
-	
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Action|Ability")
+	FGameplayTag StartTag;
 };

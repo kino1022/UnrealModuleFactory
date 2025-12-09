@@ -74,6 +74,9 @@ void UAttributeBarWidget::UpdateBar_Implementation() {
 			ProgressBarView->SetFillColorAndOpacity(BarColor);
 		}
 	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("UAttributeBarWidget::UpdateBar_Implementation: AbilitySystem is invalid"));
+	}
 }
 
 void UAttributeBarWidget::OnChangeCurrentAttribute(const FOnAttributeChangeData& Data) {

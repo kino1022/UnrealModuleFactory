@@ -4,8 +4,11 @@
 #include "Action/SprintActionAbility.h"
 #include "AbilitySystemComponent.h"
 #include "Character/CharacterBase.h"
+#include "Character/StaminaAttributeSet.h"
+#include "TimerManager.h"
 
 USprintActionAbility::USprintActionAbility() {
+	
 }
 
 void USprintActionAbility::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) {
@@ -24,6 +27,8 @@ void USprintActionAbility::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 	
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	
+	UE_LOG(LogTemp, Display, TEXT("SprintAction was Activated"))
+	
 	AbilitySystem = GetOwnerCharacter()->GetAbilitySystemComponent();
 		
 	if (!AbilitySystem.IsValid()) {
@@ -33,6 +38,14 @@ void USprintActionAbility::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 	UAbilitySystemComponent* AbilitySystemComponent = AbilitySystem.Get();
 	
 	if (AbilitySystemComponent) {
+		
+		// スタミナをチェック
+		const UStaminaAttributeSet* StaminaAttr = AbilitySystemComponent->GetSet<UStaminaAttributeSet>();
+		if (!StaminaAttr || StaminaAttr->GetStamina() <= 0.0f) {
+			// スタミナがない場合は即座にアビリティを終了
+			EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+			return;
+		}
 		
 		if (ActiveGameplayEffect.IsValid()) {
 			AbilitySystemComponent->RemoveActiveGameplayEffect(ActiveGameplayEffect);
@@ -61,12 +74,58 @@ void USprintActionAbility::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 				AbilitySystemComponent
 				);
 		}
+		
+		// スタミナ消費用のGameplayEffectを適用
+		if (StaminaDrainEffect) {
+			FGameplayEffectSpecHandle StaminaDrainSpecHandle = AbilitySystemComponent
+				->MakeOutgoingSpec(
+					StaminaDrainEffect,
+					1.0f,
+					AbilitySystemComponent->MakeEffectContext()
+				);
+			
+			if (StaminaDrainSpecHandle.IsValid()) {
+				// スタミナ消費量を設定
+				StaminaDrainSpecHandle.Data.Get()->SetSetByCallerMagnitude(
+					DrainEffectTag,
+					-StaminaDrainRate
+				);
+				
+				ActiveStaminaDrainEffect = AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(
+					*StaminaDrainSpecHandle.Data,
+					AbilitySystemComponent
+				);
+			}
+		}
+		
+		// スタミナチェックタイマーを開始
+		if (ACharacterBase* Character = Cast<ACharacterBase>(ActorInfo->AvatarActor.Get())) {
+			if (UWorld* World = Character->GetWorld()) {
+				World->GetTimerManager().SetTimer(
+					StaminaCheckTimerHandle,
+					this,
+					&USprintActionAbility::CheckStamina,
+					StaminaCheckInterval,
+					true
+				);
+			}
+		}
 	}
 }
 
 void USprintActionAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) {
 	
-	if (!ActiveGameplayEffect.IsValid() && AbilitySystem.IsValid()) {
+	// タイマーをクリア
+	if (StaminaCheckTimerHandle.IsValid()) {
+		if (ACharacterBase* Character = Cast<ACharacterBase>(ActorInfo->AvatarActor.Get())) {
+			if (UWorld* World = Character->GetWorld()) {
+				World->GetTimerManager().ClearTimer(StaminaCheckTimerHandle);
+			}
+		}
+		StaminaCheckTimerHandle.Invalidate();
+	}
+	
+	if (!AbilitySystem.IsValid()) {
 		Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 		return;
 	}
@@ -74,9 +133,45 @@ void USprintActionAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, c
 	UAbilitySystemComponent* AbilitySystemComponent = AbilitySystem.Get();
 	
 	if (AbilitySystemComponent) {
-		AbilitySystemComponent->RemoveActiveGameplayEffect(ActiveGameplayEffect);
-		ActiveGameplayEffect.Invalidate();
+		// スプリントエフェクトを削除
+		if (ActiveGameplayEffect.IsValid()) {
+			AbilitySystemComponent->RemoveActiveGameplayEffect(ActiveGameplayEffect);
+			ActiveGameplayEffect.Invalidate();
+		}
+		
+		// スタミナ消費エフェクトを削除
+		if (ActiveStaminaDrainEffect.IsValid()) {
+			AbilitySystemComponent->RemoveActiveGameplayEffect(ActiveStaminaDrainEffect);
+			ActiveStaminaDrainEffect.Invalidate();
+		}
 	}
 	
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
+
+void USprintActionAbility::CheckStamina() {
+	if (!AbilitySystem.IsValid()) {
+		return;
+	}
+	
+	UAbilitySystemComponent* AbilitySystemComponent = AbilitySystem.Get();
+	if (!AbilitySystemComponent) {
+		return;
+	}
+	
+	const UStaminaAttributeSet* StaminaAttr = AbilitySystemComponent->GetSet<UStaminaAttributeSet>();
+	if (!StaminaAttr) {
+		return;
+	}
+	
+	// スタミナが0以下の場合はアビリティを終了
+	if (StaminaAttr->GetStamina() <= 0.0f) {
+		UE_LOG(LogTemp, Warning, TEXT("SprintActionAbility: Stamina depleted, ending ability."));
+		
+		// アビリティをキャンセル
+		if (IsActive()) {
+			CancelAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfo(), true);
+		}
+	}
+}
+

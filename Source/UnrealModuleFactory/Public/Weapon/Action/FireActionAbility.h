@@ -18,7 +18,7 @@ class UNREALMODULEFACTORY_API UFireActionAbility : public UActionAbility
 public:
 	
 	UFireActionAbility();
-	
+
 protected:
 	
 

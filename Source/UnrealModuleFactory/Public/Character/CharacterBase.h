@@ -18,6 +18,7 @@ public:
 	// Sets default values for this character's properties
 	ACharacterBase();
 	
+	UFUNCTION(BlueprintCallable, Category = "Character|AbilitySystem")
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override {
 		return Cast<UAbilitySystemComponent>(AbilitySystemComponent);
 	}
