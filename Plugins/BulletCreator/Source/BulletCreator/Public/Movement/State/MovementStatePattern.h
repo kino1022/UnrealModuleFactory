@@ -29,7 +29,7 @@ struct FPatternTransition {
 /**
  * 移動パターンの状態を定義するデータアセット
  */
-UCLASS(Blueprintable, BlueprintType)
+UCLASS()
 class BULLETCREATOR_API UMovementStatePattern : public UDataAsset {
 	GENERATED_BODY()
 public:
