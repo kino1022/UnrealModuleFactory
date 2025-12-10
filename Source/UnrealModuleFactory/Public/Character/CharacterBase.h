@@ -40,6 +40,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CharacterBase")
 	class UHealthAttributeSet* HealthAttribute;
 
+	/* スタミナのアトリビュート */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CharacterBase")
 	class UStaminaAttributeSet* StaminaAttribute;
 	
@@ -74,8 +75,9 @@ protected:
 	/* 画面上に配置するHUDのクラス */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CharacterBase")
 	TSubclassOf<class UUserWidget> HUDWidget;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="CharacterBase")
+
+	/* HUDのインスタンス */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="CharacterBase")
 	UUserWidget* PlayerHUD;
 	
 public:	
