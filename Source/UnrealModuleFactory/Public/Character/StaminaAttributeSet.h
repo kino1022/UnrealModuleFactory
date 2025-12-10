@@ -44,4 +44,5 @@ public:
 
 	UFUNCTION()
 	virtual void OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina);
+	
 };

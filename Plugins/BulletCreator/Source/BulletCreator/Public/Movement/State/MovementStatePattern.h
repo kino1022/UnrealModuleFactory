@@ -22,8 +22,8 @@ struct FPatternTransition {
 	TObjectPtr<class UMovementStatePattern> NextState;
 	
 	/* 遷移条件トリガー（複数指定可能、全てtrueで遷移） */
-	UPROPERTY(EditAnywhere, Instanced, BlueprintReadOnly, Category = "Transition")
-	TArray<TObjectPtr<UPatternTransitionTrigger>> TransitionTriggers;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Transition")
+	TArray<TSubclassOf<UPatternTransitionTrigger>> TransitionTriggers;
 };
 
 /**
@@ -34,13 +34,13 @@ class BULLETCREATOR_API UMovementStatePattern : public UDataAsset {
 	GENERATED_BODY()
 public:
 	
-	/* この状態で使用するSpeedPattern（VelocityPatternと排他的） */
-	UPROPERTY(EditAnywhere, Instanced, BlueprintReadOnly, Category = "Pattern")
-	TObjectPtr<class UBulletSpeedPattern> SpeedPattern;
+	/* この状態で使用するSpeedPatternのクラス（VelocityPatternと排他的） */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pattern")
+	TSubclassOf<class UBulletSpeedPattern> SpeedPatternClass;
 	
-	/* この状態で使用するVelocityPattern（SpeedPatternと排他的） */
-	UPROPERTY(EditAnywhere, Instanced, BlueprintReadOnly, Category = "Pattern")
-	TObjectPtr<class UBulletVelocityPattern> VelocityPattern;
+	/* この状態で使用するVelocityPatternのクラス（SpeedPatternと排他的） */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pattern")
+	TSubclassOf<class UBulletVelocityPattern> VelocityPatternClass;
 	
 	/* この状態からの遷移ルール */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Transition")

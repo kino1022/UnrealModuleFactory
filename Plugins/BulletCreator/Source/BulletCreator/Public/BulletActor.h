@@ -24,24 +24,26 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "BulletActor|Owner")
 	class ACharacter* GetOwnerCharacter() const;
+	
+	UFUNCTION(BlueprintCallable, Category = "BulletActor|Owner")
+	UMeshComponent* GetBulletMesh () const;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BulletActor|Components")
-	UMeshComponent* BulletMesh;
+	TObjectPtr<UMeshComponent> BulletMesh;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="BulletActor|Components")
-	UProjectileMovementComponent* ProjectileMovement;
+	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BulletActor|Components")
-	class UMovementControlComponent* MovementControl;
+	TObjectPtr<class UMovementControlComponent> MovementControl;
 	
 	/* 弾丸の持ち主を示す弱参照 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="BulletActor|Components")
-	TWeakObjectPtr<class ACharacter> OwnerCharacter;
-	
+	TWeakObjectPtr<ACharacter> OwnerCharacter;
 
 public:	
 	// Called every frame

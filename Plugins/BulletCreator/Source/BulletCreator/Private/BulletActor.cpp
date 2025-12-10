@@ -11,7 +11,7 @@ ABulletActor::ABulletActor() {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	BulletMesh = CreateDefaultSubobject<UMeshComponent>(TEXT("BulletMesh"));
+	BulletMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BulletMesh"));
 	RootComponent = BulletMesh;
 	
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
@@ -33,6 +33,10 @@ ACharacter* ABulletActor::GetOwnerCharacter() const {
 		return nullptr;
 	}
 	return OwnerCharacter.Get();
+}
+
+UMeshComponent* ABulletActor::GetBulletMesh () const {
+	return BulletMesh;
 }
 
 // Called when the game starts or when spawned

@@ -57,7 +57,7 @@ void UAttributeBarWidget::UpdateBar_Implementation() {
 		float CurrentValue = AbilitySystem->GetNumericAttribute(CurrentAttribute);
 		float MaxValue = AbilitySystem->GetNumericAttribute(MaxAttribute);
 
-		if (CurrentValue < MaxValue) {
+		if (CurrentValue > MaxValue) {
 			CurrentValue = MaxValue;
 		}
 

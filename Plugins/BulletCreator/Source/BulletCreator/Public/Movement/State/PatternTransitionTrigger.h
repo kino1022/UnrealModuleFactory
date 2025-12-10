@@ -10,7 +10,7 @@
 /**
  * 
  */
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(Blueprintable, BlueprintType, EditInlineNew)
 class BULLETCREATOR_API UPatternTransitionTrigger : public UMovementPatternObject {
 	
 	GENERATED_BODY()
