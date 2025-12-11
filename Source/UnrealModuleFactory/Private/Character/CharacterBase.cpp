@@ -11,6 +11,7 @@
 #include "Public/UI/PlayerHUD.h"
 #include "Character/HealthAttributeSet.h"
 #include "Action/MoveActionAttributeSet.h"
+#include "Character/CharacterLockControlComponent.h"
 #include "Character/StaminaAttributeSet.h"
 #include "EnhancedInput/Public/EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -32,7 +33,9 @@ ACharacterBase::ACharacterBase() {
 	
 	AbilitySystemComponent = CreateDefaultSubobject<UActionAbilitySystemComponent>("AbilitySystemComponent");
 	AddOwnedComponent(AbilitySystemComponent);
-
+	
+	LockControlComponent = CreateDefaultSubobject<UCharacterLockControlComponent>("LockControlComponent");
+	AddOwnedComponent(LockControlComponent);
 	
 	// キャラクターの回転とカメラの回転を分離する場合の設定
 	// （キャラクターが向いている方向に勝手に回転しないようにする）

@@ -2,6 +2,7 @@
 
 
 #include "Weapon/Action/FireActionAbility.h"
+#include "Abilities/Tasks/AbilityTask_WaitDelay.h"
 
 UFireActionAbility::UFireActionAbility() {
 	
@@ -38,10 +39,24 @@ void UFireActionAbility::FireLoop() {
 		return;
 	}
 	
-	UAbilityTask_WaitDelay* FireTask = UAbilityTask_WaitDelay::WaitDelay(
-		this,
-		0.1f
+	//...生成処理をここに書く
+	
+	//タスクの生成
+	//なんかEndAbilityが呼ばれると自動でキャンセルが走るからライフタイムを考える必要がないみたい
+	UAbilityTask_WaitDelay* Task = UAbilityTask_WaitDelay::WaitDelay(
+		this, 
+		FireInterval
 		);
+	
+	//射撃のループをバインド
+	Task->OnFinish.AddDynamic(this, &UFireActionAbility::OnWaitElapsed);
+	//タスク開始
+	Task->ReadyForActivation();
+}
+
+void UFireActionAbility::OnWaitElapsed() {
+	//これで円環を作る
+	FireLoop();
 }
 
 TArray<FString> UFireActionAbility::GetMuzzleSocketNames() const {

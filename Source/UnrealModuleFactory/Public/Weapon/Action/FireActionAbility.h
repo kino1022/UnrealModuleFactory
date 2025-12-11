@@ -29,7 +29,10 @@ public:
 
 protected:
 	
-	virtual void FireLoop ();
+	virtual void FireLoop();
+	
+	UFUNCTION()
+	void OnWaitElapsed();
 
 	/* 銃自体の参照 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "FireAction|Weapon")
@@ -46,6 +49,10 @@ protected:
 	/* 生成する弾丸のクラス */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "FireAction|Bullet")
 	TSubclassOf<class ABulletActor> BulletClass;
+	
+	/* 射撃の間隔 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "FireAction|Bullet")
+	float FireInterval = 0.1f;
 	
 	/* 射撃モーション */
 	TObjectPtr<class AnimationMontage> FireMontage;

@@ -60,6 +60,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="CharacterBase")
 	class UActionAbilitySystemComponent* AbilitySystemComponent;
 	
+	/* 視点移動管理コンポーネント */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="CharacterBase")
+	TObjectPtr<class UCharacterLockControlComponent> LockControlComponent;
+	
 	/* アビリティと入力の紐付けデータ */
 	UPROPERTY(EditDefaultsOnly, Category="CharacterBase")
 	TObjectPtr<UAbilityInputConfig> AbilityInputConfig;
