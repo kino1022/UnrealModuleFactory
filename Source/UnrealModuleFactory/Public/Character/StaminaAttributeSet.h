@@ -25,7 +25,7 @@ public:
 
 	UStaminaAttributeSet();
 
-	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "StaminaAttributes", ReplicatedUsing = OnRep_Stamina)
 	FGameplayAttributeData Stamina;
@@ -37,7 +37,7 @@ public:
 
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& EmittedState) override;
 
-	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 	UFUNCTION()
 	virtual void OnRep_Stamina(const FGameplayAttributeData& OldStamina);

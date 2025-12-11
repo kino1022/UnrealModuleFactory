@@ -24,13 +24,12 @@ public:
 	
 	UHealthAttributeSet();
 	
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	
 	UPROPERTY(BlueprintReadOnly, Category = "HealthAttributes", ReplicatedUsing = OnRep_Health)
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UHealthAttributeSet, Health)
 	
-	
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-
 	UPROPERTY(BlueprintReadOnly, Category = "HealthAttributes", ReplicatedUsing = OnRep_MaxHealth)
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UHealthAttributeSet, MaxHealth)
