@@ -31,6 +31,9 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="BulletActor|Components")
+	TObjectPtr<class USphereComponent> BulletSphere;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BulletActor|Components")
 	TObjectPtr<UMeshComponent> BulletMesh;
@@ -40,6 +43,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BulletActor|Components")
 	TObjectPtr<class UMovementControlComponent> MovementControl;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="BulletActor|Components")
+	TObjectPtr<class UBulletCollisionControlComponent> BulletCollision;
 	
 	/* 弾丸の持ち主を示す弱参照 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="BulletActor|Components")

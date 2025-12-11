@@ -25,7 +25,7 @@ public:
 
 	UStaminaAttributeSet();
 
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "StaminaAttributes", ReplicatedUsing = OnRep_Stamina)
 	FGameplayAttributeData Stamina;
@@ -37,12 +37,19 @@ public:
 
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& EmittedState) override;
 
-	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 
 	UFUNCTION()
 	virtual void OnRep_Stamina(const FGameplayAttributeData& OldStamina);
 
 	UFUNCTION()
 	virtual void OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina);
+
+protected:
+
+	/*スタミナ回復に対してクールタイムを施すGameplayEffect*/
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "StaminaAttributes")
+	TSubclassOf<UGameplayEffect> RecoveryCoolTimeEffectClass;
+	
 	
 };

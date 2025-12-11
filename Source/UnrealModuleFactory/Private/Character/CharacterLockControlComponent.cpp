@@ -24,13 +24,6 @@ void UCharacterLockControlComponent::BeginPlay() {
 	if (InputComponent) {
 		SetupInput(InputComponent);
 	}
-	
-	UCameraComponent* FollowCam = Cast<ACharacter>(GetOwner())->GetComponents<UCameraComponent>();
-	
-	if (FollowCam) {
-		FollowCamera = FollowCam;
-	}
-	
 }
 
 void UCharacterLockControlComponent::SetupInput(UInputComponent* InputComponent) {
@@ -66,11 +59,7 @@ void UCharacterLockControlComponent::OnLockInput(const struct FInputActionValue&
 }
 
 bool UCharacterLockControlComponent::GetLookTargetLocation(const float MaxRange, FVector& OutHitLocation) const {
-	if (!FollowCamera) {
-		return false;
-	}
-	
-	
+	return true;
 }
 
 

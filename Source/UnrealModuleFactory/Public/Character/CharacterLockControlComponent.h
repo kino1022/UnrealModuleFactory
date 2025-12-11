@@ -6,6 +6,15 @@
 #include "Components/ActorComponent.h"
 #include "CharacterLockControlComponent.generated.h"
 
+USTRUCT(BlueprintType)
+struct FLookTargetContext {
+	GENERATED_BODY()
+public:
+	/* 視点の先に何らかのオブジェクトが存在したか */
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	bool bHit;
+};
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class UNREALMODULEFACTORY_API UCharacterLockControlComponent : public UActorComponent
