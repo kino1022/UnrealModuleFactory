@@ -23,7 +23,8 @@ public class UnrealModuleFactory : ModuleRules
 			"BulletCreator",
 			"GameplayTags",
 			"GameplayTasks",
-			"GameplayAbilities"
+			"GameplayAbilities",
+			"BulletCreator"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] 
@@ -46,7 +47,8 @@ public class UnrealModuleFactory : ModuleRules
 			"UnrealModuleFactory/Variant_SideScrolling/Gameplay",
 			"UnrealModuleFactory/Variant_SideScrolling/Interfaces",
 			"UnrealModuleFactory/Variant_SideScrolling/UI",
-			"AnimGraphRuntime"
+			"AnimGraphRuntime",
+			"BulletCreator"
 		});
 
 		// Uncomment if you are using Slate UI

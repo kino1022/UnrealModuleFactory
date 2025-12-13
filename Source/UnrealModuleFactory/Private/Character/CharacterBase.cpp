@@ -4,6 +4,8 @@
 
 #include "Action/AbilityInputAction.h"
 #include "Action/ActionAbilitySystemComponent.h"
+#include "Action/SimpleAttackActionAbility.h"
+#include "Action/SocketBasedAttackActionAbility.h"
 #include "Blueprint/UserWidget.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -146,30 +148,25 @@ void ACharacterBase::Input_AbilityInputTagReleased(FGameplayTag InputTag) {
 }
 	
 
-void ACharacterBase::PossessedBy(AController* NewController)
-{
+void ACharacterBase::PossessedBy(AController* NewController) {
 	Super::PossessedBy(NewController);
 	
-	if (NewController && AbilitySystemComponent)
-	{
+	if (NewController && AbilitySystemComponent) {
 		// サーバー側での初期化
 		AbilitySystemComponent->InitAbilityActorInfo(this, this);
 		InitializeAttribute();
 		
 		// アビリティの付与（サーバーのみ）
-		if (UActionAbilitySystemComponent* ActionASC = Cast<UActionAbilitySystemComponent>(AbilitySystemComponent))
-		{
+		if (UActionAbilitySystemComponent* ActionASC = Cast<UActionAbilitySystemComponent>(AbilitySystemComponent)) {
 			ActionASC->InitializeAbilities();
 		}
 	}
 }
 
-void ACharacterBase::OnRep_PlayerState()
-{
+void ACharacterBase::OnRep_PlayerState() {
 	Super::OnRep_PlayerState();
 	
-	if (AbilitySystemComponent && GetPlayerState())
-	{
+	if (AbilitySystemComponent && GetPlayerState()) {
 		// クライアント側での初期化
 		AbilitySystemComponent->InitAbilityActorInfo(this, this);
 		
@@ -180,5 +177,92 @@ void ACharacterBase::OnRep_PlayerState()
 
 void ACharacterBase::InitializeAttribute() {
 	
+}
+
+void ACharacterBase::OnAttackWindowBegin_Implementation(FGameplayTag AttackTypeTag, bool bDrawDebug)
+{
+	// 現在アクティブな攻撃アビリティを探す
+	if (AbilitySystemComponent)
+	{
+		// SimpleAttackActionAbilityをチェック
+		FGameplayAbilitySpec* SimpleAttackSpec = AbilitySystemComponent->FindAbilitySpecFromClass(USimpleAttackActionAbility::StaticClass());
+		if (SimpleAttackSpec && SimpleAttackSpec->IsActive())
+		{
+			if (USimpleAttackActionAbility* AttackAbility = Cast<USimpleAttackActionAbility>(SimpleAttackSpec->GetPrimaryInstance()))
+			{
+				AttackAbility->bIsAttackWindowActive = true;
+				return;
+			}
+		}
+		
+		// SocketBasedAttackActionAbilityをチェック
+		FGameplayAbilitySpec* SocketAttackSpec = AbilitySystemComponent->FindAbilitySpecFromClass(USocketBasedAttackActionAbility::StaticClass());
+		if (SocketAttackSpec && SocketAttackSpec->IsActive())
+		{
+			if (USocketBasedAttackActionAbility* SocketAttackAbility = Cast<USocketBasedAttackActionAbility>(SocketAttackSpec->GetPrimaryInstance()))
+			{
+				SocketAttackAbility->bIsAttackWindowActive = true;
+				return;
+			}
+		}
+	}
+}
+
+void ACharacterBase::ExecuteAttackHitDetection_Implementation(FGameplayTag AttackTypeTag, bool bDrawDebug)
+{
+	// 現在アクティブな攻撃アビリティに判定実行を依頼
+	if (AbilitySystemComponent)
+	{
+		// SimpleAttackActionAbilityをチェック
+		FGameplayAbilitySpec* SimpleAttackSpec = AbilitySystemComponent->FindAbilitySpecFromClass(USimpleAttackActionAbility::StaticClass());
+		if (SimpleAttackSpec && SimpleAttackSpec->IsActive())
+		{
+			if (USimpleAttackActionAbility* AttackAbility = Cast<USimpleAttackActionAbility>(SimpleAttackSpec->GetPrimaryInstance()))
+			{
+				AttackAbility->PerformAttackTrace(AttackTypeTag, bDrawDebug);
+				return;
+			}
+		}
+		
+		// SocketBasedAttackActionAbilityをチェック
+		FGameplayAbilitySpec* SocketAttackSpec = AbilitySystemComponent->FindAbilitySpecFromClass(USocketBasedAttackActionAbility::StaticClass());
+		if (SocketAttackSpec && SocketAttackSpec->IsActive())
+		{
+			if (USocketBasedAttackActionAbility* SocketAttackAbility = Cast<USocketBasedAttackActionAbility>(SocketAttackSpec->GetPrimaryInstance()))
+			{
+				SocketAttackAbility->PerformAttackTrace(AttackTypeTag, bDrawDebug);
+				return;
+			}
+		}
+	}
+}
+
+void ACharacterBase::OnAttackWindowEnd_Implementation(FGameplayTag AttackTypeTag)
+{
+	// 攻撃ウィンドウを無効化
+	if (AbilitySystemComponent)
+	{
+		// SimpleAttackActionAbilityをチェック
+		FGameplayAbilitySpec* SimpleAttackSpec = AbilitySystemComponent->FindAbilitySpecFromClass(USimpleAttackActionAbility::StaticClass());
+		if (SimpleAttackSpec && SimpleAttackSpec->IsActive())
+		{
+			if (USimpleAttackActionAbility* AttackAbility = Cast<USimpleAttackActionAbility>(SimpleAttackSpec->GetPrimaryInstance()))
+			{
+				AttackAbility->bIsAttackWindowActive = false;
+				return;
+			}
+		}
+		
+		// SocketBasedAttackActionAbilityをチェック
+		FGameplayAbilitySpec* SocketAttackSpec = AbilitySystemComponent->FindAbilitySpecFromClass(USocketBasedAttackActionAbility::StaticClass());
+		if (SocketAttackSpec && SocketAttackSpec->IsActive())
+		{
+			if (USocketBasedAttackActionAbility* SocketAttackAbility = Cast<USocketBasedAttackActionAbility>(SocketAttackSpec->GetPrimaryInstance()))
+			{
+				SocketAttackAbility->bIsAttackWindowActive = false;
+				return;
+			}
+		}
+	}
 }
 

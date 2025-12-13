@@ -44,6 +44,10 @@ public:
 
 	UFUNCTION()
 	virtual void OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina);
+	
+	virtual void OnRecoveryStamina (const FGameplayEffectModCallbackData& Data);
+	
+	virtual void OnDecreaseStamina (const FGameplayEffectModCallbackData& Data);
 
 protected:
 

@@ -8,10 +8,11 @@
 #include "Action/AbilityInputConfig.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
+#include "Animation/AttackHitInterface.h"
 #include "CharacterBase.generated.h"
 
 UCLASS()
-class UNREALMODULEFACTORY_API ACharacterBase : public ACharacter, public IAbilitySystemInterface {
+class UNREALMODULEFACTORY_API ACharacterBase : public ACharacter, public IAbilitySystemInterface, public IAttackHitInterface {
 	GENERATED_BODY()
 
 public:
@@ -94,6 +95,11 @@ public:
 	void Input_AbilityInputTagPressed(FGameplayTag InputTag);
 	
 	void Input_AbilityInputTagReleased(FGameplayTag InputTag);
+	
+	// IAttackHitInterface implementation
+	virtual void OnAttackWindowBegin_Implementation(FGameplayTag AttackTypeTag, bool bDrawDebug) override;
+	virtual void ExecuteAttackHitDetection_Implementation(FGameplayTag AttackTypeTag, bool bDrawDebug) override;
+	virtual void OnAttackWindowEnd_Implementation(FGameplayTag AttackTypeTag) override;
 	
 protected:
 	

@@ -2,13 +2,13 @@
 
 
 #include "BulletActor.h"
-
-#include "Components/BoxComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Movement/MovementControlComponent.h"
 #include "GameFramework/Character.h"
 #include "Components/SphereComponent.h"
 #include "Collision/BulletCollisionControlComponent.h"
+#include "Collision/BulletHitContext.h"
+#include "Range/BulletRangeRecorder.h"
 
 // Sets default values
 ABulletActor::ABulletActor() {
@@ -29,7 +29,17 @@ ABulletActor::ABulletActor() {
 	
 	MovementControl = CreateDefaultSubobject<UMovementControlComponent>(TEXT("MovementControl"));
 	AddOwnedComponent(MovementControl);
-
+	
+	RangeRecorder = CreateDefaultSubobject<UBulletRangeRecorder>(TEXT("RangeRecorder"));
+	AddOwnedComponent(RangeRecorder);
+	
+	//Sphereコンポーネント本位での物理挙動を有効に
+	BulletSphere->SetSimulatePhysics(true);
+	//衝突時のコールバックを登録
+	BulletSphere->OnComponentHit.AddDynamic(this, &ABulletActor::OnHit);
+	
+	//Mesh本位での物理挙動を無効に
+	BulletMesh->SetSimulatePhysics(false);
 }
 
 void ABulletActor::SetOwnerCharacter(class ACharacter* NewOwnerCharacter) {
@@ -53,13 +63,21 @@ UMeshComponent* ABulletActor::GetBulletMesh () const {
 // Called when the game starts or when spawned
 void ABulletActor::BeginPlay() {
 	Super::BeginPlay();
-	if (BulletMesh) {
-	}
 }
 
 // Called every frame
 void ABulletActor::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
-
 }
 
+void ABulletActor::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) {
+	FBulletHitContext HitContext;
+	HitContext.Hit = Hit;
+	HitContext.NormalImpulse = NormalImpulse;
+	HitContext.OtherActor = OtherActor;
+	HitContext.OtherComp = OtherComp;
+	HitContext.BulletActor = this;
+	if (BulletCollision) {
+		BulletCollision->OnHit(HitContext);
+	}
+}
