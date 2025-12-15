@@ -63,6 +63,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attack|Damage")
 	TSubclassOf<class UGameplayEffect> DamageEffectClass;
 	
+	/** 攻撃中に重力を無効化するか */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack|Gravity")
+	bool bCancelGravity = false;
+	
 	/** 同じアクターへの重複ヒット防止 */
 	UPROPERTY(BlueprintReadOnly, Category = "Attack|Detection")
 	TArray<AActor*> HitActors;
@@ -81,6 +85,9 @@ protected:
 	
 	/** ソケットの位置を取得するヘルパー関数 */
 	bool GetSocketLocation(FName SocketName, const FVector& Offset, FVector& OutLocation) const;
+	
+	/** 重力のキャッシュ(アニメーションの実行中に重力を向こうにする場合に使用) */
+	float cachedGravityScale = 0.0f;
 
 public:
 	

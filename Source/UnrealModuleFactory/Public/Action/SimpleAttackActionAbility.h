@@ -75,6 +75,8 @@ protected:
 	/** モンタージュ再生タスク */
 	UPROPERTY()
 	class UAbilityTask_PlayMontageAndWait* MontageTask;
+	
+	
 
 public:
 	

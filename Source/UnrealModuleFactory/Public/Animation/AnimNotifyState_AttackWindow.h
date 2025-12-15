@@ -39,7 +39,7 @@ protected:
 	
 	/** デバッグ用：攻撃判定の範囲を可視化 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Debug")
-	bool bDrawDebug = false;
+	bool bDrawDebug = true;
 
 #if WITH_EDITOR
 	virtual FString GetNotifyName_Implementation() const override;

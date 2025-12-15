@@ -9,6 +9,7 @@
 #include "DrawDebugHelpers.h"
 #include "AbilitySystemInterface.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 USocketBasedAttackActionAbility::USocketBasedAttackActionAbility()
 {
@@ -58,6 +59,15 @@ void USocketBasedAttackActionAbility::ActivateAbility(const FGameplayAbilitySpec
 			
 			MontageTask->ReadyForActivation();
 		}
+		
+		// 重力無効化する場合の処理
+		if (bCancelGravity) {
+			UCharacterMovementComponent* MovementComp = Cast<ACharacter>(ActorInfo->AvatarActor.Get())->GetCharacterMovement();
+			if (MovementComp) {
+				cachedGravityScale = MovementComp->GravityScale;
+				MovementComp->GravityScale = 0.0f;
+			}
+		}
 	}
 	else
 	{
@@ -71,6 +81,14 @@ void USocketBasedAttackActionAbility::EndAbility(const FGameplayAbilitySpecHandl
 	bIsAttackWindowActive = false;
 	bHasPreviousTrace = false;
 	HitActors.Empty();
+	
+	if (bCancelGravity) {
+		// 重力を元に戻す
+		UCharacterMovementComponent* MovementComp = Cast<ACharacter>(ActorInfo->AvatarActor.Get())->GetCharacterMovement();
+		if (MovementComp) {
+			MovementComp->GravityScale = cachedGravityScale;
+		}
+	}
 	
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
@@ -103,6 +121,7 @@ void USocketBasedAttackActionAbility::PerformAttackTrace(FGameplayTag AttackType
 {
 	if (!bIsAttackWindowActive)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("SocketBasedAttackActionAbility: Attack window is not active."));
 		return;
 	}
 	
@@ -111,11 +130,13 @@ void USocketBasedAttackActionAbility::PerformAttackTrace(FGameplayTag AttackType
 	
 	if (!GetSocketLocation(TraceStartSocketName, StartSocketOffset, StartLocation))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("SocketBasedAttackActionAbility: Failed to get start socket location '%s'"), *TraceStartSocketName.ToString());
 		return;
 	}
 	
 	if (!GetSocketLocation(TraceEndSocketName, EndSocketOffset, EndLocation))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("SocketBasedAttackActionAbility: Failed to get end socket location '%s'"), *TraceEndSocketName.ToString());
 		return;
 	}
 	
@@ -153,15 +174,17 @@ void USocketBasedAttackActionAbility::PerformAttackTrace(FGameplayTag AttackType
 	// デバッグ描画
 	if (bDrawDebug)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("bDrawDebug true"));
+		
 		// トレースラインを描画
-		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Yellow, false, 2.0f, 0, 2.0f);
+		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Yellow, false, -1.0f, 0, 2.0f);
 		
 		// 開始位置と終了位置に球を描画
-		DrawDebugSphere(GetWorld(), TraceStart, TraceRadius, 12, FColor::Green, false, 2.0f);
-		DrawDebugSphere(GetWorld(), TraceEnd, TraceRadius, 12, FColor::Red, false, 2.0f);
+		DrawDebugSphere(GetWorld(), TraceStart, TraceRadius, 12, FColor::Green, false, -1.0f);
+		DrawDebugSphere(GetWorld(), TraceEnd, TraceRadius, 12, FColor::Red, false, -1.0f);
 		
 		// ソケット位置も表示
-		DrawDebugSphere(GetWorld(), StartLocation, 5.0f, 8, FColor::Cyan, false, 2.0f);
+		DrawDebugSphere(GetWorld(), StartLocation, 5.0f, 8, FColor::Cyan, false, -1.0f);
 	}
 	
 	// ヒットしたアクターを処理

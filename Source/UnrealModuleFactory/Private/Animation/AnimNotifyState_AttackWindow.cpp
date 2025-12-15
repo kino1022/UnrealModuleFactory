@@ -23,12 +23,12 @@ void UAnimNotifyState_AttackWindow::NotifyBegin(USkeletalMeshComponent* MeshComp
 	if (IAttackHitInterface* AttackInterface = Cast<IAttackHitInterface>(MeshComp->GetOwner()))
 	{
 		// 攻撃判定開始を通知
-		AttackInterface->OnAttackWindowBegin(AttackTypeTag, bDrawDebug);
+		IAttackHitInterface::Execute_OnAttackWindowBegin(AttackInterface->_getUObject(), AttackTypeTag, bDrawDebug);
 		
 		// 連続判定が不要な場合は、開始時に一度だけ判定実行
 		if (!bContinuousDetection)
 		{
-			AttackInterface->ExecuteAttackHitDetection(AttackTypeTag, bDrawDebug);
+			IAttackHitInterface::Execute_ExecuteAttackHitDetection(AttackInterface->_getUObject(),AttackTypeTag, bDrawDebug);
 		}
 	}
 }
@@ -45,7 +45,7 @@ void UAnimNotifyState_AttackWindow::NotifyTick(USkeletalMeshComponent* MeshComp,
 	// 連続判定が有効な場合は毎フレーム実行
 	if (IAttackHitInterface* AttackInterface = Cast<IAttackHitInterface>(MeshComp->GetOwner()))
 	{
-		AttackInterface->ExecuteAttackHitDetection(AttackTypeTag, bDrawDebug);
+		IAttackHitInterface::Execute_ExecuteAttackHitDetection(AttackInterface->_getUObject(), AttackTypeTag, bDrawDebug);
 	}
 }
 
@@ -61,7 +61,7 @@ void UAnimNotifyState_AttackWindow::NotifyEnd(USkeletalMeshComponent* MeshComp, 
 	// 攻撃判定終了を通知
 	if (IAttackHitInterface* AttackInterface = Cast<IAttackHitInterface>(MeshComp->GetOwner()))
 	{
-		AttackInterface->OnAttackWindowEnd(AttackTypeTag);
+		IAttackHitInterface::Execute_OnAttackWindowEnd(AttackInterface->_getUObject(), AttackTypeTag);
 	}
 }
 

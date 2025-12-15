@@ -71,7 +71,8 @@ void UActionAbilitySystemComponent::AbilityInputCanceled (const FGameplayTag& In
 void UActionAbilitySystemComponent::ProcessAbilityInput(const FGameplayTag& InputTag, bool Pressed) {
 	for (FGameplayAbilitySpec& Spec : GetActivatableAbilities()) {
 		UActionAbility* CastedAbility = Cast<UActionAbility>(Spec.Ability);
-		if (CastedAbility && CastedAbility->StartTag.MatchesTagExact(InputTag)){
+		
+		if (CastedAbility && CastedAbility->StartTag.MatchesTagEsSxact(InputTag)){
 			if (Pressed) {
 				// 入力押しイベントをスペックに通知
 				Spec.InputPressed = true;
